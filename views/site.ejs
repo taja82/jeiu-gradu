@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <title>블로그</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* styles for '...' */
+        .ellipsis {
+            /* hide text if it more than N lines  */
+            overflow: hidden;
+            /* for set '...' in absolute position */
+            position: relative;
+            /* use this value to count block height */
+            line-height: 1.5em;
+            /* max-height = line-height (1.2) * lines max number (3) */
+            max-height: 4.5em;
+            /* fix problem when last visible word doesn't adjoin right side  */
+            text-align: justify;
+
+            /* */
+            margin-right: -1em;
+            padding-right: 1em;
+        }
+
+        .ellipsis:before {
+            /* points in the end */
+            content: '...';
+            /* absolute position */
+            position: absolute;
+            /* set position to right bottom corner of block */
+            right: 0;
+            bottom: 0;
+        }
+
+        .ellipsis:after {
+            /* points in the end */
+            content: '';
+            /* absolute position */
+            position: absolute;
+            /* set position to right bottom corner of text */
+            right: 0;
+            width: 1em;
+            /* set width and height */
+            height: 1em;
+            margin-top: 0.2em;
+            background: white;
+        }
+
+        .gixi,
+        .gixi-me {
+            display: inline-block;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        .gixi-sm {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border-radius: 6px;
+            box-shadow: 0px 0px 2px #aaa;
+            margin: 5px;
+            padding: 5px;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        textarea {
+            overflow: hidden;
+            padding: 0;
+            outline: none;
+            resize: none;
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <!--<link href="css/css" rel="stylesheet">-->
+    <!-- Custom styles for this template -->
+    <link href="css/blog.css" rel="stylesheet">
+</head>
+
+<body onload="init();">
+    <div class="container">
+        <header class="blog-header py-3">
+            <div class="row flex-nowrap justify-content-between align-items-center">
+                <div class="col-4 pt-1">
+
+                </div>
+                <div class="col-4 text-center">
+                    <a class="blog-header-logo text-dark font-weight-bold"
+                        href="https://getbootstrap.com/docs/4.4/examples/blog/#">블로그</a>
+                </div>
+                <div class="col-4 d-flex justify-content-end align-items-center">
+                    <a class="text-muted" href="https://getbootstrap.com/docs/4.4/examples/blog/#" aria-label="Search">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img"
+                            viewBox="0 0 24 24" focusable="false">
+                            <title>Search</title>
+                            <circle cx="10.5" cy="10.5" r="7.5"></circle>
+                            <path d="M21 21l-5.2-5.2"></path>
+                        </svg>
+                    </a>
+                    <!--<a class="btn btn-sm btn-outline-secondary" href="https://getbootstrap.com/docs/4.4/examples/blog/#">로그인</a>-->
+                    <a class="btn btn-sm btn-outline-secondary"
+                        href="https://getbootstrap.com/docs/4.4/examples/blog/#">로그아웃</a>
+                </div>
+            </div>
+        </header>
+
+        <div class="nav-scroller py-1 mb-2">
+            <nav class="nav d-flex justify-content-between">
+                <a class="p-2 text-muted" href="https://getbootstrap.com/docs/4.4/examples/blog/#">컴퓨터</a>
+                <a class="p-2 text-muted" href="https://getbootstrap.com/docs/4.4/examples/blog/#">코딩</a>
+                <a class="p-2 text-muted" href="https://getbootstrap.com/docs/4.4/examples/blog/#">음식</a>
+                <a class="p-2 text-muted" href="https://getbootstrap.com/docs/4.4/examples/blog/#">내 작품</a>
+                <a class="p-2 text-muted" href="https://getbootstrap.com/docs/4.4/examples/blog/#">학교생활</a>
+                <a class="p-2 text-muted" href="https://getbootstrap.com/docs/4.4/examples/blog/#">제품리뷰</a>
+                <a class="p-2 text-muted" href="https://getbootstrap.com/docs/4.4/examples/blog/#">낙서장</a>
+                <a class="p-2 text-muted" href="https://getbootstrap.com/docs/4.4/examples/blog/#">취미생활</a>
+
+
+
+            </nav>
+        </div>
+
+        <div class="jumbotron p-4 p-md-5 text-white rounded bg-dark">
+            <div class="px-0">
+                <h1 class="display-4 ">대학교 가고싶다.</h1>
+                <p class="lead my-3 ellipsis">미안하다 이거 보여주려고 영상만들었다... 영상 결과물 ㄹㅇ실화냐? 진짜 하루하루가 싸움이다.. 그찐따같던 나
+                    맞나? 진짜
+                    예전의 나는 어느 의미로 전설이다..진짜옛날에 영상만드럿는데 그거와 비교하면 엄청난게 실력이발전된거 보면 진짜내가다 감격스럽고 영상 한장면장면마다 뇌리에
+                    스치면서 가슴이 웅장해진다.. 그리고 컴퓨터 에 내앞에 운석날라오는 거대한 걸 사스케가 갑자기 순식간에 나타나서 삭제버리곤 개간지나게 나루토가 없다면 마을을 지킬 자는 나밖에
+                    없다 라며 바람처럼 사라진장면은 진짜 나루토처음부터 본사람이면 안울수가없더라 진짜 너무 감격스럽고 보루토를 최근에 알았는데 미안하다.. 지금20화보는데 진짜 나루토세대나와서 너무
+                    감격스럽고 모두어엿하게 큰거보니 내가 다 뭔가 알수없는 추억이라해야되나 그런감정이 이상하게 얽혀있다.. 시노는 말이많아진거같다 좋은선생이고..그리고 보루토왜욕하냐 귀여운데
+                    나루토를보는것같다 성격도 닮았어 그리고버루토에 나루토사스케 둘이싸워도 이기는 신같은존재 나온다는게 사실임?? 그리고인터닛에 쳐봣는디 이거 ㄹㅇㄹㅇ 진짜팩트냐?? 저적이 보루토에
+                    나오는 신급괴물임?ㅡ 나루토사스케 합체한거봐라 진짜 ㅆㅂ 이거보고 개충격먹어가지고 와 소리 저절로 나오더라 ;; 진짜 저건 개오지는데.. 저게 ㄹㅇ이면 진짜 꼭봐야돼 진짜 세계도
+                    파괴시키는거아니야 .. 와 진짜 나루토사스케가 저렇게 되다니 진짜 눈물나려고했다.. 버루토그라서 계속보는중인데 저거 ㄹㅇ이냐..? 하.. ㅆㅂ 사스케 보고싶다.. 진짜언제 이렇게
+                    신급 최강들이 되었을까 옛날생각나고 나 중딩때생각나고 뭔가 슬프기도하고 좋기도하고 감격도하고 여러가지감정이 복잡하네.. 아무튼 나루토는 진짜 애니중최거명작임..</p>
+                <p class="lead mb-0"><a href="https://getbootstrap.com/docs/4.4/examples/blog/#"
+                        class="text-white font-weight-bold">계속 읽기...</a></p>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <div
+                    class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-primary">학교생활</strong>
+                        <h4 class="mb-0">코로나 19로 학교못가네요</h4>
+                        <div class="mb-1 text-muted">3월 7일</div>
+                        <p class="card-text mb-auto ellipsis">휴학하고 오랜만에 학교 가는거라 기대하고 있었는데, 최근에 코로나 사건으로 인해 대면 수업 대신 온라인
+                            수업으로 대체되었습니다. 빨리 코로나 사태가 끝나고 학교 가는 날이 왔으면 좋겠습니다.</p>
+                        <a href="https://getbootstrap.com/docs/4.4/examples/blog/#" class="stretched-link">계속 읽기</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div
+                    class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-success">코딩</strong>
+                        <h4 class="mb-0">Node.js에 MongoDB 연동하는 법</h4>
+                        <div class="mb-1 text-muted">1월 15일</div>
+                        <p class="mb-auto ellipsis">Node.js에서 MongoDB를 사용하려면, mongodb 또는 mongoose모듈을 사용해야 합니다.
+                            mongodb모듈은 공식적으로 제공하지만, 사용하기 좀 어려울 수 있고, mongoose는 mongodb를 더 사용하기 쉽게 만든 모듈입니다.</p>
+                        <a href="https://getbootstrap.com/docs/4.4/examples/blog/#" class="stretched-link">계속 읽기</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg"
+                            preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+                            aria-label="Placeholder: Thumbnail">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef"
+                                dy=".3em">Thumbnail</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main role="main" class="container">
+
+        <div class="row">
+            <div class="col-md-8 blog-main">
+                <h3 class="pb-4 mb-4  border-bottom">
+                    학교생활
+                </h3>
+                <div class="blog-contents">
+
+
+                    <div class="blog-post">
+                        <h2 class="blog-post-title">대학교 꿀팁 알려 주세요</h2>
+                        <p class="blog-post-meta">2020년 05월 05일 by
+                            <a href="https://getbootstrap.com/docs/4.4/examples/blog/#">Admin</a>
+
+                        <p>
+                            코로나 19로 인해 몇 달동안 학교를 가보지 못 하고, 집에서 수업하였습니다. 이제 코로나 19사태가 거의 종료되고, 사회적 거리두기도 끝나서, 내일부터
+                            학교가기
+                            시작하는데, 대학교 관련 꿀팁 있으면 댓글로 남겨주세요, 오랫만에 학교 가는거라, 매우 설레네요
+                        </p>
+                        <hr>
+                        <div class="blog-comment">
+                            <h5>댓글 <span class="comment-count">0</span>개</h5>
+                            <div class="comment-contents" style="border:1px solid gray;">
+                                <form class="comment-form">
+                                    <div class="media">
+                                        <div>
+                                            <div class="gixi-me gixi-sm"></div>
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="media-heading">
+                                                <div class="nickname-me" contentEditable="true">Nickname</div>
+                                            </div>
+                                            <div class="media-content">
+                                                <textarea style="width:100%;" name="comment-input"
+                                                    class="comment-input"></textarea>
+                                            </div>
+                                        </div>
+                                        <div style="width:50px;height:50px;margin:5px;">
+                                            <button class="btn btn-dark"
+                                                style="width:100%;height:100%;font-size:17px;padding:5px;">작성</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="comment-list"></div>
+                            </div>
+                        </div>
+                    </div><!-- /.blog-post -->
+
+
+                    <div class="blog-post">
+                        <h2 class="blog-post-title">오늘도 온라인 수업이네요</h2>
+                        <p class="blog-post-meta">2020년 04월 28일 by <a
+                                href="https://getbootstrap.com/docs/4.4/examples/blog/#">Admin</a></p>
+
+                        <p>처음에 코로나 사태로 인해, 개강이 밀리다가, 결국에 온라인 강의로 듣게 되었는데, 온라인 강의 마저도 7주차, 8주차까지 되는 것을 보고 있네요.</p>
+                        <hr>
+                        <div class="blog-comment">
+                            <h5>댓글 <span class="comment-count">0</span>개</h5>
+                            <div class="comment-contents" style="border:1px solid gray;">
+                                <form class="comment-form">
+                                    <div class="media">
+                                        <div>
+                                            <div class="gixi-me gixi-sm"></div>
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="media-heading">
+                                                <div class="nickname-me" contentEditable="true">Nickname</div>
+                                            </div>
+                                            <div class="media-content">
+                                                <textarea style="width:100%;" name="comment-input"
+                                                    class="comment-input"></textarea>
+                                            </div>
+                                        </div>
+                                        <div style="width:50px;height:50px;margin:5px;">
+                                            <button class="btn btn-dark"
+                                                style="width:100%;height:100%;font-size:17px;padding:5px;">작성</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="comment-list"></div>
+                            </div>
+                        </div>
+                    </div><!-- /.blog-post -->
+
+                    <div class="blog-post">
+                        <h2 class="blog-post-title">학교 안 가다보니까</h2>
+                        <p class="blog-post-meta">2020년 04월 11일 by <a
+                                href="https://getbootstrap.com/docs/4.4/examples/blog/#">Admin</a></p>
+
+                        <p>마음이 복잡합니다. 학교를 가야할 시기인데, 학교를 가지 않고 집에 있어서 멀리까지 가지 않아도 되지만, 복학해서 오랫만에 학교를 가는데, 1학년때 친구들도 볼 수
+                            없고, 상황이 이런지라 집에 나가기 그런데, 부모님은 집에만 있는다고 또 뭐라하고, 이러지도 저러지도 못하니 맘 편하게 살 수 없습니다. 그냥 빨리 코로나 사태가
+                            종료됬으면 좋겠습니다.
+                        </p>
+                        <hr>
+                        <div class="blog-comment">
+                            <h5>댓글 <span class="comment-count">0</span>개</h5>
+                            <div class="comment-contents" style="border:1px solid gray;">
+                                <form class="comment-form">
+                                    <div class="media">
+                                        <div>
+                                            <div class="gixi-me gixi-sm"></div>
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="media-heading">
+                                                <div class="nickname-me" contentEditable="true">Nickname</div>
+                                            </div>
+                                            <div class="media-content">
+                                                <textarea style="width:100%;" name="comment-input"
+                                                    class="comment-input"></textarea>
+                                            </div>
+                                        </div>
+                                        <div style="width:50px;height:50px;margin:5px;">
+                                            <button class="btn btn-dark"
+                                                style="width:100%;height:100%;font-size:17px;padding:5px;">작성</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="comment-list"></div>
+                            </div>
+                        </div>
+                    </div><!-- /.blog-post -->
+
+                    <nav class="blog-pagination">
+                        <a class="btn btn-outline-primary"
+                            href="https://getbootstrap.com/docs/4.4/examples/blog/#">이전</a>
+                        <a class="btn btn-outline-secondary disabled"
+                            href="https://getbootstrap.com/docs/4.4/examples/blog/#" tabindex="-1"
+                            aria-disabled="true">다음</a>
+                    </nav>
+                </div>
+                <div style="margin-bottom: 4rem;"></div>
+
+
+
+
+            </div><!-- /.blog-main -->
+
+            <aside class="col-md-4 blog-sidebar">
+                <div class="p-4 mb-3 bg-light rounded">
+                    <h4 class="">학교생활</h4>
+                    <p class="mb-0">저에 학교생활에 대한 이야기를 담은 카테고리입니다.</p>
+                </div>
+
+                <div class="p-4">
+                    <h4 class="">기록</h4>
+                    <ol class="list-unstyled mb-0">
+                        <li><a href="https://getbootstrap.com/docs/4.4/examples/blog/#">2020년 5월</a></li>
+                        <li><a href="https://getbootstrap.com/docs/4.4/examples/blog/#">2020년 4월</a></li>
+                        <li><a href="https://getbootstrap.com/docs/4.4/examples/blog/#">2020년 3월</a></li>
+                        <li><a href="https://getbootstrap.com/docs/4.4/examples/blog/#">2020년 2월</a></li>
+                        <li><a href="https://getbootstrap.com/docs/4.4/examples/blog/#">2020년 1월</a></li>
+                        <li><a href="https://getbootstrap.com/docs/4.4/examples/blog/#">2019년 12월</a></li>
+                        <li><a href="https://getbootstrap.com/docs/4.4/examples/blog/#">2019년 11월</a></li>
+                        <li><a href="https://getbootstrap.com/docs/4.4/examples/blog/#">2019년 10월</a></li>
+                        <li><a href="https://getbootstrap.com/docs/4.4/examples/blog/#">2019년 9월</a></li>
+                        <li><a href="https://getbootstrap.com/docs/4.4/examples/blog/#">2019년 8월</a></li>
+                        <li><a href="https://getbootstrap.com/docs/4.4/examples/blog/#">2019년 7월</a></li>
+                        <li><a href="https://getbootstrap.com/docs/4.4/examples/blog/#">2019년 6월</a></li>
+                    </ol>
+                </div>
+
+            </aside><!-- /.blog-sidebar -->
+        </div><!-- /.row -->
+    </main><!-- /.container -->
+    <footer class="blog-footer">
+        <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a
+                href="https://twitter.com/mdo">@mdo</a>.</p>
+        <p>
+            <a href="https://getbootstrap.com/docs/4.4/examples/blog/#">Back to top</a>
+        </p>
+    </footer>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/gixi-min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <!--<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>-->
+    <script>
+        var socket;
+
+        socket = io.connect('https://jeiu-gradu.herokuapp.com', { 'forceNew': true, reconnection: false });
+        socket.on('connect', function () {
+            $(".nickname-me").text(socket.id);
+            createNickname(socket.id);
+            $(".gixi-me").gixi({
+                seed: $('.nickname-me').eq(0).text()
+            });
+        });
+
+        function changeNickname(nickname) {
+            socket.emit('changename', { nickname: nickname });
+        }
+        $(".nickname-me").on("focusout", function () {
+            var index = $(this).index();
+            //socket.disconnect();
+            //createNickname($('.nickname-me').text())
+            $(".nickname-me").text($(this).text());
+            changeNickname($('.nickname-me').text());
+            $(".gixi-me").gixi({
+                seed: $('.nickname-me').eq(index).text()
+            });
+        });
+
+        function createNickname(nickName) {
+            socket.emit('create_nickname', nickName, function (returnCode) {
+                if (returnCode == 1) {
+                    //정상적인 닉네임
+                    $('#chatJoin').hide();
+                    $('#chatRoom').show();
+                    $('#msgText').focus();
+                } else { //아니면 닉네임중복됨
+                    alert('존재하는 닉네임입니다.');
+                    $('#nickname-me').focus();
+                    socket.disconnect();
+                }
+            });
+        }
+
+
+        function msgAdd(data) {
+            //var sHtml = '<div><span style="color:blue;">' + data['nickname'] + '</span> : ' + data['msg'] + '</div>';
+            var sHtml = '<div class="media"><div><div class="gixi gixi-sm" data-gixiseed="' + data["nickname"] + '"></div></div><div class="media-body"><div class="media-heading"><div class="nickname">' + data["nickname"] + '</div></div><div class="media-content">' + data["msg"] + '</div></div></div>';
+            console.log(sHtml);
+            $('.comment-list').eq(data["index"]).append(sHtml);
+            $('.gixi').each(function () {
+                $(this).gixi();
+            });
+            $(".comment-count").eq(data["index"]).text(parseInt($(".comment-count").eq(data.index).text()) + 1);
+            /*for(var i=0; i<=$("comment-count").length;i++) {
+                $('.comment-count').eq(i).text(parseInt($('.comment-count').eq(i).text()) + 1);
+            }*/
+            //$("#msgList").scrollTop($("#msgList")[0].scrollHeight);
+        }
+        $(".comment-form").submit(function (event) {
+
+            event.preventDefault();
+            var index = $('form').index(this);
+            var input = $(".comment-input").eq(index);
+            console.log(index);
+            if (input.val() == "") {
+                alert("댓글이 비었습니다.");
+                input.focus();
+                return false;
+            } else {
+                var data = { "nickname": $('.nickname-me').eq(index).text(), "msg": input.val(), "index": index }
+                msgAdd(data);
+                input.val('');
+                input.focus();
+                //서버에 입력메세지전달
+                socket.emit('msgSend', data);
+            }
+        })
+        socket.on('msgPush', function (data) {
+            msgAdd(data);
+        });
+        socket.on('connect_error', function (data) {
+            alert('CONNECT_ERROR : ' + data);
+        });
+
+    </script>
+    <script type="text/javascript">
+var observe;
+if (window.attachEvent) {
+    observe = function (element, event, handler) {
+        element.attachEvent('on'+event, handler);
+    };
+}
+else {
+    observe = function (element, event, handler) {
+        element.addEventListener(event, handler, false);
+    };
+}
+function init () {
+    //var text = document.getElementById('text');
+    
+    var text = document.getElementsByClassName('comment-input')[0];
+    
+    //var text = $(".comment-input");
+    function resize () {
+        text.style.height = 'auto';
+        text.style.height = text.scrollHeight+'px';
+    }
+    /* 0-timeout to get the already changed text */
+    function delayedResize () {
+        window.setTimeout(resize, 0);
+    }
+    observe(text, 'change',  resize);
+    observe(text, 'cut',     delayedResize);
+    observe(text, 'paste',   delayedResize);
+    observe(text, 'drop',    delayedResize);
+    observe(text, 'keydown', delayedResize);
+
+    text.focus();
+    text.select();
+    resize();
+}
+</script>
+</body>
+
+</html>

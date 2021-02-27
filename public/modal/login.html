@@ -1,0 +1,349 @@
+<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">로그인</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="login_form" autocomplete="off">
+                <div class="form-group">
+                    <label for="id_input">아이디</label>
+                    <input type="text" class="form-control" id="id_input">
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password_input">비밀번호</label>
+                    <input type="password" class="form-control" id="password_input">
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="id_save">
+                    <label class="custom-control-label" for="id_save">아이디 저장</label>
+                </div>
+                <button type="button" class="btn btn-primary w-100" id="login_btn">로그인</button>
+            </form>
+            <div class="btn-group w-100" role="group" aria-label="Basic example">
+                <button type="button" id="register_btn" class="btn btn-secondary">회원가입</button>
+                <button type="button" id="findAccount_btn" class="btn btn-secondary">아이디/비밀번호 찾기</button>
+            </div>
+            <div class="social-login d-flex justify-content-center align-items-center">
+                <div class="d-flex flex-column ">
+                    <div class="text-center">
+                        <div class="social naver" id="naverIdLogin">
+                            <a id="naverIdLogin_loginButton" href="#">
+                                <img src="./social_naver.png">
+                            </a>
+                        </div>
+                        <div class="social google" id="google_login">
+                            <img src="./social_google.png">
+                        </div>
+                        <!--<div class="g-signin2" data-onsuccess="onSignIn"></div>-->
+                    </div>
+                    <div class="text-center">
+                        <div class="social kakao" id="kakao_login">
+                            <img src="./social_kakao.png">
+                        </div>
+                        <div class="social facebook" id="facebook_login">
+                            <img src="./social_facebook.png">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<script src="./valid.js"></script>
+<script>
+    var setCookie = function (name, value, exp) {
+        var date = new Date();
+        date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
+        document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
+    };
+    var getCookie = function (name) {
+        var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+        return value ? value[2] : null;
+    };
+    var deleteCookie = function (name) {
+        document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+    }
+    if (getCookie("loginid_value") != null) {//쿠키가 있는 경우
+        $("#id_save").prop("checked", "true");
+        $("#id_input").val(getCookie("loginid_value"));
+
+    }
+    // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+
+    // SDK 초기화 여부를 판단합니다.
+    //console.log(Kakao.isInitialized());
+    // @breif 카카오 로그인 버튼을 생성합니다.
+    /*Kakao.Auth.createLoginButton({
+        container: "#kakao"
+        , success: function (authObj) {
+            // console.log( authObj );
+            Kakao.API.request({
+                url: "/oauth"
+                , success: function (res) {
+                    // console.log( res );
+                    // @breif 아이디
+                    document.getElementById("kakaoIdentity").innerHTML = res.id;
+                    // @breif 닉네임
+                    document.getElementById("kakaoNickName").innerHTML = res.properties.nickname;
+                    // @breif 프로필 이미지
+                    document.getElementById("kakaoProfileImg").src = res.properties.profile_image;
+                    // @breif 썸네일 이미지
+                    document.getElementById("kakaoThumbnailImg").src = res.properties.thumbnail_image;
+                }, fail: function (error) {
+                    alert(JSON.stringify(error));
+                }
+            });
+        }
+        , fail: function (error) {
+            alert(JSON.stringify(error));
+        }
+    });*/
+    $("#kakao_login").click(function () {
+        //카카오는 로그인 타입을 4로 하기로 함
+        Kakao.Auth.login({
+            persistAccessToken: true,
+            success: function (authObj) {
+                Kakao.API.request({
+                    url: '/v2/user/me',
+                    success: function (user) {
+                        console.log(authObj.access_token);
+                        accesstoken = authObj.access_token;
+                        //console.log(user.kakao_account.email);
+                        console.log(user);
+                        console.log(user.properties.profile_image);
+                        //document.getElementById("profile_image").src = 
+                        findUserById(user.id, function (index) {
+                            if (index != undefined) {
+                                alert("로그인");
+                            } else {
+                                alert("회원정보에 없는 회원입니다. 회원가입하셔야 합니다");
+                            }
+                        });
+                        //login_now();
+                        //login_user = {no:2, logintype:4, id}
+                    }
+                });
+            },
+        });
+    })
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        var naverLogin = new naver.LoginWithNaverId(
+            {
+                //네이버 클라이언트아이디 입력해주세요
+                clientId: "clientid입력",
+                //callbackUrl: "https://jeiu-gradu.herokuapp.com/oauth/naver/callback",
+                callbackUrl: "http://" + window.location.hostname + ((location.port == "" || location.port == undefined) ? "" : ":" + location.port) + "/oauth/naver/callback",
+                isPopup: true, /* 팝업을 통한 연동처리 여부 */
+            }
+        );
+        /* 설정정보를 초기화하고 연동을 준비 */
+        naverLogin.init();
+    })
+</script>
+<script>
+    function getUserData() {
+        /* FB.api('/me', function(response) {
+            document.getElementById('response').innerHTML = 'Hello ' + response.name;
+            console.log(response);
+        }); */
+        FB.api('/me', { fields: 'name,email' }, function (response) {
+            var facebookname = response.name;    //페이스북 아이디를 변수에 저장함
+            var facebooke_mail = response.email;    //페이스북 이메일을 변수에 저장함
+            //window.location.replace("http://" + window.location.hostname + ((location.port == "" || location.port == undefined) ? "" : ":" + location.port) + "/map");
+        });
+    }
+
+    window.fbAsyncInit = function () {
+        //SDK loaded, initialize it
+        FB.init({
+            //페이스북에서 앱 id를 발급받아 입력해주세요
+            appId: '앱id', //페이스북 개발자 홈페이지에서 앱을 등록하고, 앱 id를 받아온다.
+            cookie: true,  // enable cookies to allow the server to access
+            // the session
+            xfbml: true,  // parse social plugins on this page
+            version: 'v7.0'     // 페이스북 개발자 홈페이지에서 버전을 확인한 후 작성한다.
+        });
+
+        //check user session and refresh it
+        FB.getLoginStatus(function (response) {
+            if (response.status === 'connected') {        //만약 정상적으로 실행되었다면 유저의 데이터를 가져온다.
+                //user is authorized
+                console.log(response.authResponse.accessToken);
+                getUserData();
+            } else {
+                //user is not authorized
+            }
+        });
+    };
+
+    //load the JavaScript SDK
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) { return; }
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.com/ko_KR/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    //add event listener to login button
+    document.getElementById('facebook_login').addEventListener('click', function () {
+        //do the login
+        FB.login(function (response) {
+            if (response.authResponse) {
+                access_token = response.authResponse.accessToken; //get access token
+                user_id = response.authResponse.userID; //get FB UID
+                console.log('access_token = ' + access_token);
+                console.log('user_id = ' + user_id);
+                accesstoken = response.authResponse.accessToken;
+                //login_now();
+                //user just authorized your app
+                //document.getElementById('loginBtn').style.display = 'none';
+                getUserData();
+            }
+        }, {
+            scope: 'email,public_profile,user_birthday',
+            return_scopes: true
+        });
+    }, false);
+
+    /*
+    facebook logout
+    FB.logout(function(response) {
+
+    })*/
+</script>
+<script src="https://apis.google.com/js/platform.js?onload=onLoadGoogleCallback" async defer></script>
+<script>
+    /*function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log('Full Name: ' + profile.getName());
+        console.log('Given Name: ' + profile.getGivenName());
+        console.log('Family Name: ' + profile.getFamilyName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+    }*/
+    function onLoadGoogleCallback() {
+        gapi.load('auth2', function () {
+            auth2 = gapi.auth2.init({
+                //구글에서 발급받아 입력해주세요
+                client_id: 'clientid입력',
+                cookiepolicy: 'single_host_origin',
+                scope: 'profile'
+            });
+
+            auth2.attachClickHandler(element, {},
+                function (googleUser) {
+                    console.log('Signed in: ' + googleUser.getBasicProfile().getName());
+                    console.log(googleUser.getAuthResponse().id_token);
+                    accesstoken = googleUser.getAuthResponse().id_token;
+                    //login_now();
+                }, function (error) {
+                    console.log('Sign-in error', error);
+                }
+            );
+        });
+
+        element = document.getElementById('google_login');
+    }
+</script>
+<script>
+    $("#register_btn").click(function () {
+        setModalContentByAjax("./modal/register.html");
+    });
+    $("#findAccount_btn").click(function () {
+        setModalContentByAjax("./modal/find_account.html")
+    })
+    function login_id_check(id) {
+        var id_input = $("#id_input");
+        if (id_input.val() == "") {
+            id_input.siblings(".invalid-feedback").text("아이디를 입력해야 합니다.");
+            id_input.removeClass("is-valid").addClass("is-invalid");
+            return false;
+        } else {
+            id_input.removeClass("is-invalid").addClass("is-valid");
+            return true;
+        }
+    }
+    function login_password_check(password) {
+        var password_input = $("#password_input");
+        if (password_input.val() == "") {
+            password_input.siblings(".invalid-feedback").text("비밀번호를 입력해야 합니다.");
+            password_input.removeClass("is-valid").addClass("is-invalid");
+            return false;
+        } else {
+            password_input.removeClass("is-invalid").addClass("is-valid");
+            return true;
+        }
+    }
+    $("#password_input").focusout(function () {
+        login_password_check($(this).val());
+    })
+    $("#id_input").on("propertychange change keyup paste input", function () {
+        login_id_check($(this).val());
+    });
+    var local_login = false;
+    var login_user;
+    function userlogin() {
+        login_id_check($("#id_input").val());
+        login_password_check($("#password_input").val());
+
+        if (login_id_check($("#id_input").val()) && login_password_check($("#password_input").val())) {
+            //$("#login_form").submit();
+            var i = 0;
+            for (i = 0; i < user_info.length; i++) {
+                if (user_info[i].id == $("#id_input").val() && user_info[i].password == $("#password_input").val()) {
+                    local_login = true;
+                    login_user = user_info[i];
+                    alert("로그인 됨");
+                    if ($("#id_save").prop("checked") == true) {
+                        if (getCookie("loginid_value") == null || getCookie("loginid_value") != $("#id_input").val()) {
+                            setCookie("loginid_value", $("#id_input").val(), 30);//30일 저장
+                        }
+                    } else {
+                        deleteCookie("loginid_value");
+                    }
+                    $("#id_input, #password_input").val("");
+                    login_now();
+
+                    return true;
+                    break;
+                }
+            }
+            alert("일치하는 정보 없음.. 로그인 실패");
+        }
+        return false;
+    }
+    $("#login_btn").click(function () {
+        userlogin();
+    });
+    $("#login_btn").keyup(function (e) {
+        if (e.keyCode == 13) {
+            userlogin();
+        }
+    })
+</script>

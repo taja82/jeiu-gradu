@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>오늘뭐먹지?</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=ege" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <script src="./js/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <script src="./jquery.rateyo.min.js"></script>
+    <script src="./moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"
+        charset="utf-8"></script>
+    <meta name="google-signin-scope" content="profile email" />
+    <meta name="google-signin-client_id"
+        content="884283661090-r4re4vu8nq636flp43bmhpt37uirgoi6.apps.googleusercontent.com" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="./jquery.rateyo.css" />
+    <link rel="stylesheet" href="./jquery-tagsinput.min.css" />
+    <script src="./jquery.color.plus-names-2.1.2.min.js"></script>
+    <script src="./jquery-tagsinput.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        html,
+        body,
+        div,
+        a,
+        main,
+        ul,
+        li,
+        img {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .rbtn_menu ul {
+            list-style: none;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        #mapwrap {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+        }
+
+        #loc_toggle {
+            z-index: 2;
+            position: absolute;
+            background-color: white;
+            width: 32px;
+            height: 32px;
+            right: 3px;
+            top: 231px;
+            vertical-align: middle;
+        }
+
+        .loc_btn {
+            display: inline-block;
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            top: 0;
+            left: 0;
+            cursor: pointer;
+        }
+
+        .loc_btn.off {
+            background: url(./loc_btn_off.png);
+        }
+
+        .loc_btn.off:hover {
+            background: url(./loc_btn_off_active.png);
+        }
+
+        .loc_btn.on {
+            background: url(./loc_btn_on.png);
+        }
+
+        .loc_btn.on:hover {
+            background: url(./loc_btn_on_active.png);
+        }
+
+        div.btn {
+            background: url(./btn.png);
+            width: 32px;
+            height: 32px;
+            z-index: 50;
+        }
+
+        .display_block {
+            display: block;
+        }
+
+        .btn {
+            box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .modal-content {
+            word-break: break-all;
+        }
+
+        .modal-content img {
+            width: 100%;
+        }
+
+        .wrap {
+            cursor: auto;
+            position: absolute;
+            left: 0;
+            bottom: 30px;
+            width: 288px;
+            height: auto;
+            margin-left: -144px;
+            text-align: left;
+            overflow: hidden;
+            font-size: 12px;
+            font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
+            line-height: 1.5;
+        }
+
+        .wrap .info {
+            width: 286px;
+            height: auto;
+            border-radius: 5px;
+            border-bottom: 2px solid #ccc;
+            border-right: 1px solid #ccc;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .wrap .info:nth-child(1) {
+            border: 0;
+            box-shadow: 0px 1px 2px #888;
+        }
+
+        .info .title {
+            padding: 5px 0 0 10px;
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .title>span,
+        .title>div {
+            vertical-align: middle;
+        }
+
+        .info .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #888;
+            width: 17px;
+            height: 17px;
+            background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png");
+        }
+
+        .info .close:hover {
+            cursor: pointer;
+        }
+
+        .info .body {
+            position: relative;
+            overflow: hidden;
+            padding: 5px;
+            word-break: break-all;
+        }
+
+        .info .desc {
+            height: auto;
+            overflow: hidden;
+        }
+
+        .desc .ellipsis {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .desc .jibun {
+            font-size: 11px;
+            color: #888;
+            margin-top: -2px;
+        }
+
+        .info .img {
+            top: 6px;
+            left: 5px;
+            width: 73px;
+            height: 71px;
+            margin-right: 5px;
+            border: 1px solid #ddd;
+            color: #888;
+        }
+
+        .wrap .arrow {
+            content: "";
+            position: relative;
+            margin-left: -12px;
+            left: 50%;
+            width: 22px;
+            height: 12px;
+            background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png");
+        }
+
+        .info .link {
+            color: #5085bb;
+        }
+
+        .rbtn_menu {
+            position: relative;
+            top: 5px;
+            left: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            border-bottom: 2px solid #ddd;
+            font-size: 12px;
+            padding: 10px;
+            background: #fff;
+            list-style: none;
+            margin: 0;
+        }
+
+        .rbtn_menu:nth-of-type(n) {
+            border: 0;
+            box-shadow: 0px 1px 2px #888;
+        }
+
+        .grow {
+            flex: 1;
+        }
+
+        .range_meter ul {
+            list-style: none;
+        }
+
+        .range_meter ul>li {
+            float: left;
+            padding: 5px;
+            border: 1px solid black;
+            background-color: white;
+        }
+
+        .range_meter ul>li:active {
+            background-color: #5196ff;
+        }
+
+        .range_meter ul>li:first-child {
+            border-radius: 5px 0 0 5px;
+        }
+
+        .range_meter ul>li:last-child {
+            border-radius: 0 5px 5px 0;
+        }
+
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+            background-color: rgba(255, 255, 255, .9);
+            border-radius: 3px;
+            padding: 10px;
+            max-width: 400px;
+            max-height: 450px;
+            overflow-y: auto;
+        }
+
+        .wi-100 {
+            width: 100% !important;
+        }
+
+        .social {
+            display: inline-block;
+            width: 296px;
+            height: 55px;
+            margin: 10px;
+        }
+
+        .navbar-dark .login {
+            padding: 0.5rem;
+        }
+
+        .form-control.searchbar {
+            width: auto !important;
+        }
+
+        .mobileMenu {
+            margin-top: 56px !important;
+            width: 300px;
+        }
+
+        @media (max-width: 576px) {
+            .aa {
+                width: 100%;
+            }
+
+            .mobilemargin {
+                margin: 5px;
+            }
+
+            .mobileMenu {
+                margin-top: 106px !important;
+            }
+        }
+
+        .navbar {
+            z-index: 1030;
+        }
+
+        .navbar-brand {
+            vertical-align: middle;
+        }
+
+        #rate_value {
+            display: inline-block;
+            font-size: 20px;
+            vertical-align: middle;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .modal-static {
+            overflow: hidden;
+            z-index: 9999;
+        }
+
+        #profile_image {
+            width: 40px;
+            height: 40px;
+        }
+
+        #profile_imagev>img {
+            width: 80px;
+            height: 80px;
+        }
+
+        #profile {
+            position: absolute;
+            top: 45px;
+            left: -110px;
+        }
+
+        #search_info .btn {
+            padding: 3px
+        }
+
+        img {
+            object-fit: contain;
+        }
+
+        #thumbnails img {
+            width: 80px;
+            height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="d-flex flex-column grow w-100 h-100">
+        <header class="w-100 d-flex">
+            <nav class="navbar navbar-dark bg-dark justify-content-sm-start w-100">
+                <div class="row grow">
+                    <div class="aa d-flex">
+                        <button class="navbar-toggler align-self-start" type="button">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <a class="navbar-brand order-lg-0 ml-2" href="#">오늘뭐먹지?</a>
+                    </div>
+                    <div class="d-flex grow mobilemargin">
+                        <form class="form-inline d-flex grow">
+                            <input class="form-control mr-2 flex-fill searchbar" type="search" placeholder="검색"
+                                aria-label="Search" id="searchbar" />
+                            <button class="btn btn-outline-success my-sm-0" type="button" id="search_btn">
+                                검색
+                            </button>
+                        </form>
+                        <ul class="navbar-nav mr-auto mt-lg-0">
+                            <li class="nav-item active">
+                                <a class="nav-link login" href="javascript:void(0);" onclick="login();">로그인
+                                    <span class="sr-only">(current)</span>
+                                </a>
+                                <div class="dropdown">
+                                    <a id="imageDropdown" class="login" href="javascript:void(0);"
+                                        style="display: none;" data-toggle="dropdown">
+                                        <img id="profile_image" class="rounded-circle" alt="프로필" />
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-left p-4" id="profile"
+                                        aria-labelledby="imageDropdown">
+                                        <div id="profile_imagev">
+                                            <img class="rounded-circle" />
+                                        </div>
+                                        <div id="profile_nickname"></div>
+                                        <button type="button" class="btn btn-primary"
+                                            onclick="modifyUserinfo(login_user);">
+                                            계정관리
+                                        </button>
+                                        <button type="button" class="btn btn-primary" onclick="logout();">
+                                            로그아웃
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="collapse navbar-collapse bg-dark p-3 d-flex flex-column mobileMenu"
+                    id="navbarSupportedContent">
+                    <ul class="navbar-nav align-self-stretch">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                음식점 찾기
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">대학교 근처 음식점 찾기</a>
+                                <a class="dropdown-item" href="#">현재 위치 근처 음식점 찾기</a>
+                                <a class="dropdown-item" href="#">카테고리 별 음식점 찾기</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="">평점이 높은 음식점 찾기</a>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="">최근에 추가된 음식점 찾기</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="javascript:void(0)" onclick="">즐겨찾기 된 음식점 찾기</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">옵션</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="overlay"></div>
+        </header>
+        <main class="main h-100 w-100 d-flex" role="main">
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">
+                                Modal title
+                            </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="mapwrap">
+                <div id="map"></div>
+                <div id="info" class="d-none"></div>
+                <div id="loc_toggle">
+                    <div class="btn loc">
+                        <a class="loc_btn off toggle"></a>
+                        <a class="loc_btn on toggle" style="display: none;"></a>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+        </main>
+    </div>
+    <script src="./js/script.js"></script>
+    <script src="https://unpkg.com/hangul-js" type="text/javascript"></script>
+    <!-- 아래쪽에는 카카오맵 api를 위해 자바스크립트를 선언해 주는 부분입니다. 카카오 디벨로퍼에서 api 키를 받은 이후에 정해진 부분에 받은 api키를 입력해 주세요-->
+    <script type="text/javascript"
+        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=카카오맵api키&libraries=services"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+    <script>
+        moment.locale("ko");
+        var overlay; //마커정보 표시 오버레이
+        function setModalOptions(options) {
+            var modal_object = $("#exampleModalCenter");
+            var modal_option = { backdrop: options.backdrop == undefined ? true : options.backdrop, keyboard: options.keyboard == undefined ? true : options.keyboard, show: options.show == undefined ? true : options.show, focus: options.focus == undefined ? true : options.focus };
+            if (options != ("" || undefined)) {
+                if (options.scrollable == true) {
+                    modal_object.children(".modal-dialog").addClass("modal-dialog-scrollable");
+                }
+                if (options.verticalCenter == true) {
+                    modal_object.children(".modal-dialog").addClass("modal-dialog-centered");
+                }
+            }
+            return modal_option;
+        }
+
+        function setModalContent(content = { modalTitle: "", modalBody: "" }, modal_setting = { backdrop: true, keyboard: true, scrollable: false, verticalCenter: true, fadeAnimation: true, show: true, focus: true }, callback) {
+            var modal_object = $("#exampleModalCenter");
+            //modal_object.html(response);
+            modal_object.find(".modal-title").html(content.modalTitle);
+            modal_object.find(".modal-body").html(content.modalBody);
+            modal_object.modal(setModalOptions(modal_setting));
+            modal_object.data("bs.modal")._config.backdrop = setModalOptions(modal_setting).backdrop;
+            if (typeof callback === "function") {
+                callback();
+            }
+        }
+
+        function setModalContentByAjax(url, type = "get", data = "", modal_setting = { backdrop: true, keyboard: true, scrollable: false, verticalCenter: true, fadeAnimation: true, show: true, focus: true, }, callback) {
+            var modal_object = $("#exampleModalCenter");
+            $.ajax({
+                url: url,
+                type: type,
+                data: data,
+                success: function (response) {
+                    modal_object.html(response);
+                },
+                error: function (request, status, error) {
+                    console.error(error);
+                },
+                complete: function () {
+                    modal_object.modal(setModalOptions(modal_setting));
+                    modal_object.data(
+                        "bs.modal"
+                    )._config.backdrop = setModalOptions(
+                        modal_setting
+                    ).backdrop;
+                    if (typeof callback === "function") {
+                        callback();
+                    }
+                },
+            });
+        }
+
+        //새창 만들어서 값을 보내야함. 아래 방식으로 하는 방법이 있지만, 값이 잘 넘어가지 않아, ajax로 해보려고 한다. get방식으로 파라미터 보내고 받는 쪽에서는 주소에서 파라미터 잘라서 가져올것.
+        function openNewWindowbyAjax(url, type = "get", data = "", callback) {
+            //인덱스 정보만 보내고, 받는 쪽에서는 opener를 이용하여 변수 받을것.
+            if (typeof callback === "function") {
+                var subwindow = window.open(url, title, resultdata);
+                callback();
+            }
+        }
+        //openNewWindow("./resdetail.html", { width: 700, height: 400, scrollbar="no" });
+        function openNewWindow(url, title = "window", options = "", data = "", callback) {
+            var resultdata = "";
+            if (data != "") {
+                if (typeof data === "string") {
+                    resultdata = data;
+                } else if (typeof data === "object") {
+                    /*if(data.width != undefined) {
+                    resultdata += ""
+                }*/
+                    /*for (var key in data) {
+                    document.writeln(key + ": " + data[key]);
+                    console.log(key + ": " + data[key]);
+                    resultdata += key + "=" + data[key];
+                    if()
+                }*/
+                }
+                console.log(typeof data);
+            }
+            var subwindow = window.open(url, title, resultdata);
+            if (typeof callback === "function") {
+                callback(subwindow);
+            }
+            return subwindow;
+        }
+
+        function AddMarker(lng, lat) {
+            setModalContentByAjax("./modal/addmarker.html", "get", { lng: lng, lat: lat, }, undefined, function () {
+                rightbtn_overlay.setMap(null);
+            });
+        }
+
+        function getCurrentUnivAddress(index, callback) {
+            var address = "";
+            if (univ_positions[index].address == undefined) {
+                searchDetailAddrFromCoords(univ_positions[index].latlng, function (result, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        address = !!result[0].road_address
+                            ? result[0].road_address.address_name
+                            : result[0].address.address_name;
+                    } else {
+                        address = "표시할 수 없음";
+                    }
+                    if (typeof callback === "function") {
+                        callback(address);
+                    }
+                    return address;
+                });
+            } else {
+                address = univ_positions[index].address;
+            }
+            if (typeof callback === "function") {
+                callback(address);
+            }
+            return address;
+        }
+        function getCurrentResAddress(array, index, options = { use_searchtype: false }, callback) {
+            var address = "";
+            var arraya;
+            if (options.use_searchtype == false) {
+                arraya = array[index];
+            } else {
+                arraya = array[index].item;
+            }
+            if (arraya.address == undefined) {
+                searchDetailAddrFromCoords(arraya.latlng, function (result, status) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        address = !!result[0].road_address ? result[0].road_address.address_name : result[0].address.address_name;
+                    } else {
+                        address = "표시할 수 없음";
+                    }
+                    if (typeof callback === "function") {
+                        callback(address);
+                    }
+                    return address;
+                }
+                );
+            } else {
+                address = arraya.address;
+            }
+            if (typeof callback === "function") {
+                callback(address);
+            }
+            return address;
+        }
+        // 나중에 음식점 정보 수정할 때에 주소 입력할 수 있도록 변경 필요
+        //굳이 이 방법을 할 필요가 없었음
+        function setCustomAddress(index) {
+            //console.log(json.latlng);
+            var lat = res_positions[index].latlng.getLat();
+            var lng = res_positions[index].latlng.getLng();
+            setModalContentByAjax("./modal/customaddress.html", "get", { lng: lng, lat: lat, }, undefined, function () {
+                getCurrentResAddress(res_positions, index, undefined, function (address) {
+                    console.log(address);
+                    //$("#beforeaddress_input").val(getCurrentResAddress(index));
+                });
+            });
+        }
+
+        function remove_balnk(text) {
+            return text.replace(/%s/g, "");
+        }
+
+        function setlowercase(text) {
+            return text.toLowerCase();
+        }
+
+        function comparesearchval(text) {
+            return setlowercase(remove_blank(text));
+        }
+        var result_array = [];
+        function search(text, options = { search: "", useTag: true, useMultiTag: true }) {
+            //search항목은 무엇을 검색할것인지 정함.
+            //빈칸이나 res는 음식점
+            //univ는 대학교
+            //both는 둘다
+
+            //다중태그
+            var tagmode = false;
+            text = text.trim().toLowerCase();
+            result_array = [];
+            var searching = [];
+            var tagsearching = [];
+            var a;
+            //(#\S+)
+            if (/\#\S*/.test(text)) {
+                tagmode = true;
+                console.log(/\#\S*(,)?/.exec(text));
+            }
+            if (tagmode != true) {
+                if (options.search == "univ") {
+                    searching = univ_positions;
+                }
+                if (options.search == "" || options.search == "res") {
+                    searching = res_positions;
+                }
+                if (options.search == "both") {
+                    searching = res_positions.concat(univ_positions);
+                }
+            }
+            if (tagmode != true) {
+                $.each(searching, function (index, item) {
+                    if (item.name.indexOf(text) != -1) {
+                        result_array.push({ originindex: index, item: item });
+                    }
+                });
+            } else {
+                if (options.useTag == true) {
+                    //searching = res_positions.tag.join();
+                    //jquery each에서는 return true가 for문의 continue, return false가 for문의 break과 같다.
+                    $.each(res_positions, function (index, item) {
+                        if (res_positions[index].tag == undefined) {
+                            return true;
+                        }
+                        $.each(item.tag.split(", "), function (i, it) {
+                            if (it == text) {
+                                result_array.push({ originindex: index, item: item });
+                            }
+                        })
+                    });
+                }
+            }
+
+            console.log(result_array);
+            if (result_array.length == 0) {
+                alert("결과가 없습니다");
+            } else {
+                setsearchinginfo(result_array);
+            }
+        }
+        $("#search_btn").click(function () {
+            if ($("#searchbar").val() == "") {
+                alert("검색어가 비었습니다");
+            } else {
+                console.log("검색");
+                search($("#searchbar").val());
+            }
+        });
+        //유저정보
+        /*비밀번호 찾기 질문
+        1.어릴 때 살던 동네는?
+        2. 가장 친하게 지냈던 친구의 이름은?
+        3. 가장 인상 깊게 읽었던 책의 이름은?
+        */
+        /*로그인 타입
+        1.일반
+        2.네이버
+        3.구글
+        4.카카오
+        5.페이스북
+        */
+        var user_info = [
+            {
+                "no": 1,
+                "logintype": 1,
+                "id": "admin",
+                "nickname": "관리자",
+                "password": "testest",
+                "email": "admin@aaa.com",
+                "password_find": {
+                    "question_val": 1,
+                    "custom_question": "",
+                    "answer": "인천",
+                },
+                "profile_img": "https://via.placeholder.com/80",
+                "is_admin": true
+            }
+        ];
+        //옵션
+        var option = {
+            "accuracy_circle": true,
+        };
+        //위치 정보 버튼
+        /*document.querySelector(".loc.btn").addEventListener("click", function () {
+            var element = document.querySelector(".toggle");
+            if (element.classList) {
+                //element.classList.toggle();
+
+            }
+        })*/
+        $(".loc_btn.off").click(function () {
+            deactive();
+        });
+        $(".loc_btn.on").click(function () {
+            active();
+        });
+        document.querySelector(".loc_btn.on").addEventListener("click", function () {
+            deactive();
+        }); //위치정보 비활성화
+        document.querySelector(".loc_btn.off").addEventListener("click", function () {
+            active();
+        }); //위치정보 활성화
+        var mapContainer = document.getElementById("map"), // 지도를 표시할 div
+            mapOption = {
+                center: new kakao.maps.LatLng(
+                    37.47550219283372,
+                    126.64991593521401
+                ), // 지도의 중심좌표
+                level: 3, // 지도의 확대 레벨
+            };
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+        var mapTypeControl = new kakao.maps.MapTypeControl(); //주소컨트롤
+        var geocoder = new kakao.maps.services.Geocoder(); //주소불러오기
+        map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT); //지도컨트롤 오른쪽위에 위치
+        // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+        var zoomControl = new kakao.maps.ZoomControl();
+        map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+        var nav;
+        var loc_a;
+        var res_marker; //음식점 마커
+        var loc_range; //현재위치 정확도 원
+        var loc_marker; //현재위치 마커
+        var res_markers = [];
+        var univ_markers = []; //학교 마커
+        //데이터가 길어질 것이니, 나중에 json파일로 만들어 사용하던가, 아니면 자바스크립트를 거치지 않고 바로 db에서 출력하는 방법도 고려해 볼것.
+        //학교 데이터
+        var univ_positions = [
+            {
+                "name": "인천재능대학교",
+                "latlng": new kakao.maps.LatLng(37.47549769624242, 126.64991878249211),
+                "homepage": "https://www.jeiu.ac.kr/",
+                "main_image": "https://www.jeiu.ac.kr/main_work/img/JEIU_LOGO.png"
+            },
+            {
+                "name": "인천대학교 제물포캠퍼스",
+                "latlng": new kakao.maps.LatLng(37.47187894470781, 126.65796480257175),
+            },
+            {
+                "name": "청운대학교 인천캠퍼스",
+                "latlng": new kakao.maps.LatLng(37.47201284124011, 126.66065470907884),
+            },
+            {
+                "name": "인하대학교 용현캠퍼스",
+                "latlng": new kakao.maps.LatLng(37.44986319192759, 126.65345411409103),
+            },
+            {
+                "name": "인하공업전문대학",
+                "latlng": new kakao.maps.LatLng(37.448307380737724, 126.65755229727739),
+            },
+            {
+                "name": "부천대학교",
+                "latlng": new kakao.maps.LatLng(37.48867435304638, 126.77931645582377),
+            },
+            {
+                "name": "한국폴리텍대학교 인천캠퍼스",
+                "latlng": new kakao.maps.LatLng(37.478273105378626, 126.75572103758823),
+            },
+            {
+                "name": "가천대학교 메디컬캠퍼스",
+                "latlng": new kakao.maps.LatLng(37.42228822500946, 126.68757455500192)
+            },
+            {
+                "name": "인천대학교 송도캠퍼스",
+                "latlng": new kakao.maps.LatLng(37.37456733183252, 126.63319648302962),
+            },
+            {
+                "name": "연세대학교 국제캠퍼스",
+                "latlng": new kakao.maps.LatLng(37.382114674991115, 126.67197880148521),
+            },
+            {
+                "name": "인천재능대학교 송도캠퍼스",
+                "latlng": new kakao.maps.LatLng(37.3698219395817, 126.66455314072185),
+            },
+            {
+                "name": "한국외국어대학교",
+                "latlng": new kakao.maps.LatLng(37.36939175353545, 126.66616377804901),
+            },
+            {
+                "name": "인천가톨릭대학교 송도국제캠퍼스",
+                "latlng": new kakao.maps.LatLng(37.37271742746844, 126.66330401747126),
+            },
+            {
+                "name": "유한대학교",
+                "latlng": new kakao.maps.LatLng(37.48733897879265, 126.8207945891405),
+            }
+        ];
+        //음식점 데이터
+        //음식점 구분 1: 한식, 2: 중식, 3: 일식, 4: 양식, 5: 분식, 6: 기타
+        //나중에 서버 작업할 때 modal_content부분도 html형식으로 저장하지 말고, 따로 html 만들어서 값만 바꾸는 형식으로 만들것.
+        //mysql에 저장할 때에는 array 형식으로 저장할 수 없으니, 나중에 db에서 불러올 때에는 varchar형식으로 저장 후에 불러올 때 seperator(분리 기호, 예를 들어 콤마 같은거)를 이용할것. split 활용
+        //나중에 서버 작업할 때에는 클라이언트로 가져올 때에는 json방식으로 해야함으로, 서버단에서 mysql에 값을 json 형식으로 변환한 후에 가져올 것.
+        var divide = {};
+        var res_positions = [
+            {
+                "name": "맘스터치 재능대점",
+                "divide_num": 5,
+                "tag": "#인크레디블버거, #포테이토버거",
+                "latlng": new kakao.maps.LatLng(37.474292877511466, 126.6500120162383),
+                "rate": 0,
+                "tel": "032-764-5580",
+                "createDate": moment("2020-04-25"),
+                "lastmodDate": moment("2020-06-01"),
+                "main_image": "./다운로드.png",
+                "no1menu": "싸이버거",
+                "address": "인천 동구 새천년로38번길 11 동산휴먼시아 상가동 207호",
+                "open_time": {
+                    "everyday": {
+                        "start": moment().set({ 'hour': 11, 'minute': 0 }),
+                        "end": moment().set({ 'hour': 23, 'minute': 0 })
+                    }
+                    /*
+                    "custom": {
+                        "mon" : {
+                            "start": moment().set({'hour': 11, 'minute':0}),
+                            "end": moment().set({'hour': 23, 'minute':0})
+                        },
+                        "tue" : {
+                            "start": moment().set({'hour': 11, 'minute':0}),
+                            "end": moment().set({'hour': 23, 'minute':0})
+                        },
+                        "wed" : {
+                            "start": moment().set({'hour': 11, 'minute':0}),
+                            "end": moment().set({'hour': 23, 'minute':0})
+                        },
+                        "thu" : {
+                            "start": moment().set({'hour': 11, 'minute':0}),
+                            "end": moment().set({'hour': 23, 'minute':0})
+                        },
+                        "fri" : {
+                            "start": moment().set({'hour': 11, 'minute':0}),
+                            "end": moment().set({'hour': 23, 'minute':0})
+                        },
+                        "sat" : {
+                            "start": moment().set({'hour': 11, 'minute':0}),
+                            "end": moment().set({'hour': 23, 'minute':0})
+                        },
+                        "sun" : {
+                            "start": moment().set({'hour': 11, 'minute':0}),
+                            "end": moment().set({'hour': 23, 'minute':0})
+                        },
+                    }
+                    */
+                },
+                "menus": {
+                    //"special": [],
+                    "main": [
+                        {
+                            "name": "간장마늘치킨",
+                            "price": 17000,
+                            "is_favorite": true
+                        },
+                        {
+                            "name": "알룰로스치킨",
+                            "price": 18000
+                        },
+                        {
+                            "name": "찜햇닭",
+                            "price": 17000
+                        },
+                        {
+                            "name": "치파오",
+                            "price": 16000,
+                            "is_favorite": true
+                        },
+                        {
+                            "name": "싸이버거",
+                            "price": 3800,
+                            "is_favorite": true,
+                            "is_recommend": true
+                        },
+                        {
+                            "name": "딥치즈버거",
+                            "price": 4000,
+                            "is_favorite": true
+                        },
+                        {
+                            "name": "언빌리버블버거",
+                            "price": 5100,
+                            "is_favorite": true
+                        },
+                        {
+                            "name": "인크레디블버거",
+                            "price": 4900
+                        },
+                        {
+                            "name": "화이트갈릭버거",
+                            "price": 4100
+                        },
+                        {
+                            "name": "살사리코버거",
+                            "price": 4500
+                        },
+                        {
+                            "name": "디럭스불고기버거",
+                            "price": 4000
+                        },
+                        {
+                            "name": "통새우버거",
+                            "price": 2900
+                        }
+                    ],
+                    "sub": [
+                        {
+                            "name": "바삭크림치즈볼",
+                            "price": 3500
+                        },
+                        {
+                            "name": "케이준양념감자",
+                            "price": 1700
+                        }
+                    ],
+                    "dessert": [
+
+                    ],
+                    "drink": [
+
+                    ]
+                },
+                "price_range": {//가격대. 메인음식의 최소가격과, 최고가격을 적어놓으면 됨.
+                    /*"min":2900,
+                    "max":18000*/
+                },
+                "reviews": [
+                    {
+                        "user": {
+                            "id": "admin",
+                            "nickname": "관리자",
+                            "profile_img": "https://via.placeholder.com/80",
+                        },
+                        "rate": 4.8,
+                        "review_content": "asdfasdf",
+                        "createDate": moment("2020-05-02"),
+                        "lastmodDate": moment("2020-05-02"),
+                    }],
+                "is_favorite": true,
+                "homepage": undefined
+            },
+            {
+                "name": "송림반점",
+                "divide_num": 2,
+                "tag": "#짜장면",
+                "latlng": new kakao.maps.LatLng(37.47760240949109, 126.64945109048588),
+                "rate": 0,
+                "tel": "032-762-9790",
+                "lastmodDate": moment("2020-05-25"),
+            },
+            {
+                "divide_num": 5,
+                "name": "김밥나라",
+                "latlng": new kakao.maps.LatLng(37.47710732459824, 126.64960885307917),
+            },
+            {
+                "name": "꿍야 도화점",
+                "latlng": new kakao.maps.LatLng(37.467605069448894, 126.65611911087775),
+            },
+            {
+                "name": "재능대학교 학생식당",
+                "latlng": new kakao.maps.LatLng(37.47534134465912, 126.65036606681099),
+            },
+            {
+                "name": "신불 떡볶이",
+                "latlng": new kakao.maps.LatLng(37.4721043094448, 126.66191759646986),
+            },
+            {
+                "name": "크레플",
+                "latlng": new kakao.maps.LatLng(37.46771319704868, 126.65612144159756),
+            },
+            {
+                "name": "맘스터치 부천원미점",
+                "divide_num": 5,
+                "tag": "#인크레디블버거, #포테이토버거",
+                "latlng": new kakao.maps.LatLng(37.49387032377605, 126.79139509259362),
+                "rate": 0,
+                "tel": "032-662-4279",
+                "createDate": moment("2020-04-25"),
+                "lastmodDate": moment("2020-06-01"),
+                "main_image": "./다운로드.png",
+                "no1menu": "싸이버거",
+                "address": "경기 부천시 원미로 126 명성프라자 107호",
+                "reviews": [
+                    {
+                        "user": {
+                            "id": "admin",
+                            "nickname": "관리자",
+                            "profile_img": "https://via.placeholder.com/80",
+                        },
+                        "rate": 4.0,
+                        "review_content": "asdfasdf",
+                        "createDate": moment("2020-05-02"),
+                        "lastmodDate": moment("2020-05-02"),
+                        "img": undefined
+                    }],
+                "is_favorite": true,
+            },
+            {
+                "name": "맘스터치 부천대점",
+                "divide_num": 5,
+                "tag": "#인크레디블버거, #포테이토버거",
+                "latlng": new kakao.maps.LatLng(37.48832422211833, 126.78120578489022),
+                "rate": 0,
+                "tel": "032-611-8636",
+                "createDate": moment("2020-04-25"),
+                "lastmodDate": moment("2020-06-01"),
+                "main_image": "./다운로드.png",
+                "no1menu": "싸이버거",
+                "address": "경기 부천시 부천로39번길 44 2층",
+                "reviews": [
+                    {
+                        "user": {
+                            "id": "admin",
+                            "nickname": "관리자",
+                            "profile_img": "https://via.placeholder.com/80",
+                        },
+                        "rate": 4.5,
+                        "review_content": "asdfasdf",
+                        "createDate": moment("2020-05-02"),
+                        "lastmodDate": moment("2020-05-02"),
+                        "img": undefined
+                    }],
+                "is_favorite": true,
+            },
+            {
+                "name": "해동반점",
+                "divide_num": 3,
+                "tag": "#짜장면",
+                "latlng": new kakao.maps.LatLng(37.128904925563525, 128.20552729694117)
+            }
+        ];
+        function setdefaultrate() {
+            for (var i = 0; i < res_positions.length; i++) {
+                if (res_positions[i].rate == undefined) {
+                    res_positions[i].rate = 0;
+                } else {
+                    continue;
+                }
+            }
+        }
+        function set_pricerange(index) {
+            var array = res_positions[index].menus.main;
+            var max = array[0].price, min = array[0].price;
+            $.each(res_positions[index].menus.main, function (index, item) {
+                if (item.price >= max) {
+                    max = item.price;
+                } else if (item.price <= min) {
+                    min = item.price;
+                }
+
+            })
+            res_positions[index].price_range.max = max;
+            res_positions[index].price_range.min = min;
+            console.log(max);
+            console.log(min);
+        }
+        set_pricerange(0);
+        setdefaultrate();
+        function set_rateAvg() {
+            var avg = 0;
+            var sum = 0;
+            var i = 0;
+            for (i = 0; i < res_info.reviews.length; i++) {
+                sum += res_info.reviews[i].rate;
+            }
+            avg = sum / i;
+            res_info.rate = Math.floor(avg);
+            console.log(avg);
+            return avg;
+        }
+        //for문으로 모든 음식점 마커 정보를 넣고, 이벤트 생성
+        for (var i = 0; i < res_positions.length; i++) {
+            //마커 생성
+            res_marker = new kakao.maps.Marker({
+                map: map,
+                position: res_positions[i].latlng,
+                zIndex: 1
+            });
+            res_markers.push(res_marker);
+            // 마커에 표시할 인포윈도우를 생성합니다
+            var infowindow = new kakao.maps.InfoWindow({
+                content: res_positions[i].name, // 인포윈도우에 표시할 내용
+            });
+            // 이벤트 리스너로는 클로저를 만들어 등록합니다
+            // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+            kakao.maps.event.addListener(res_marker, "click", showResInfo(res_positions[i].latlng, i));
+        }
+        var rightbtn_overlay = new kakao.maps.CustomOverlay({
+            xAnchor: 0,
+            yAnchor: 0,
+            zindex: 4,
+            clickable: true,
+        });
+        var show_right_menu = false;
+        kakao.maps.event.addListener(map, "rightclick", function (event) {
+            show_right_menu = true;
+            var selected_position = rightbtn_overlay.getPosition();
+            rightbtn_overlay.setContent(
+                "<div class='rbtn_menu'><ul><li><a href='#' onclick='AddMarker(" +
+                selected_position.getLng() +
+                ", " +
+                selected_position.getLat() +
+                ");'>현재 위치에 추가</a></li><li><a href='#'>메뉴2</a></li><li><a href='#'>메뉴3</a></li></ul></div>"
+            );
+            rightbtn_overlay.setPosition(event.latLng);
+            rightbtn_overlay.setMap(map);
+        });
+
+        function searchDetailAddrFromCoords(coords, callback) {
+            // 좌표로 법정동 상세 주소 정보를 요청합니다
+            geocoder.coord2Address(
+                coords.getLng(),
+                coords.getLat(),
+                callback
+            );
+        }
+        overlay = new kakao.maps.CustomOverlay({
+            //content: content,
+            clickable: true,
+            map: map,
+            zIndex: 3
+            //position: marker.getPosition()
+        });
+        //overlay.setZIndex(3);
+
+        function showResInfo(latlng, index) {
+            return function () {
+                //var pos = marker.getPosition();
+                var pos = latlng;
+                map.panTo(pos);
+                var coordinate = res_positions[index].latlng;
+                getCurrentResAddress(res_positions, index, undefined, function (address) {
+                    var content =
+                        '<div class="wrap">' +
+                        '    <div class="info">' +
+                        '        <div class="title">' +
+                        '<span style="vertical-align:middle">' +
+                        '    <span class="fa fa-star-o" style="font-size:15px;margin:5px"></span>' +
+                        "<span>" +
+                        res_positions[index].name +
+                        "</span>" +
+                        '<i class="fa fa-arrow-circle-right fa-lg ml-1" aria-hidden="true" onclick="show_detail(' +
+                        index +
+                        ');"></i>' +
+                        '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
+                        "</span>" +
+                        "        </div>" +
+                        '        <div class="body media">' +
+                        '            <div class="img">' +
+                        '                <img src="' +
+                        (res_positions[index].main_image != undefined ? res_positions[index].main_image : "https://via.placeholder.com/73x70") +
+                        '" width="73" height="70">' +
+                        "           </div>" +
+                        '            <div class="desc media-body">' +
+                        '                <div class="text-wrap">' +
+                        address +
+                        "</div>" +
+                        "               <div>" +
+                        (res_positions[index].tel != undefined ? "<a href='tel:" + res_positions[index].tel + "'>" + res_positions[index].tel + "</a>" : "") +
+                        "</div>" +
+                        '               <div>평점:<div class="d-flex align-items-center"><div id="rateYo"></div><div id="rate_value"></div></div>' +
+                        "            </div>" +
+                        "        </div>" +
+                        "    </div>" +
+                        "</div>" +
+                        '<div class="arrow"></div>' +
+                        "</div>";
+                    $(function () {
+                        $("#rateYo").on("rateyo.init", function (e, data) {
+                            $("#rate_value").text(data.rating);
+                        });
+                        $("#rateYo").rateYo({
+                            starWidth: "15px",
+                            readOnly: true,
+                            rating: res_positions[index].rate,
+                        });
+                    });
+                    overlay.setPosition(pos);
+                    overlay.setContent(content);
+                    overlay.setMap(map);
+                });
+
+                marker_selected = true;
+            };
+        }
+
+        function show_detail(index) {
+            var pos = res_positions[index].latlng;
+            var coordinate = res_positions[index].latlng;
+            openNewWindow(
+                "./resdetail.html?index=" + index,
+                res_positions[index].name,
+                undefined,
+                undefined,
+                function (subwindow) {
+                    try {
+                        subwindow.index = index;
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
+            );
+        }
+        //로그인 모달 함수
+        function login() {
+            setModalContentByAjax("/modal/login.html", "get", undefined, { backdrop: "static", keyboard: false, });
+        }
+
+        function modifyUserinfo(current_user) {
+            setModalContentByAjax("./modal/user_modify.html", "get", undefined, { backdrop: "static", keyboard: false, }, function () {
+                set_id(login_user.id);
+                set_email(login_user.email);
+                set_nickname(login_user.nickname);
+                set_profile(login_user.profile_img);
+            });
+        }
+        // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+        function makeOverListener(map, marker, infowindow) {
+            return function () {
+                infowindow.open(map, marker);
+            };
+        }
+
+        // 인포윈도우를 닫는 클로저를 만드는 함수입니다
+        function makeOutListener(infowindow) {
+            return function () {
+                infowindow.close();
+            };
+        }
+        //현재 위치 마커 설정
+        var loc_marker_img_size = new kakao.maps.Size(25, 25);
+        loc_marker = new kakao.maps.Marker({
+            map: map,
+            image: new kakao.maps.MarkerImage("./loc.png", loc_marker_img_size, { offset: new kakao.maps.Point(12.5, 12.5), }),
+        });
+        //마커 거리 재는 함수
+        function radius_from_coordinate(radius, center) {
+            //
+            res_markers.forEach(function (m) {
+                var c1 = center; //매개 변수를 통해 중심 좌표 가져옴
+                var c2 = m.getPosition();
+                //맵 위에 그리는 선
+                var poly = new kakao.maps.Polyline({
+                    // map: map, 을 하지 않아도 거리는 구할 수 있다.
+                    strokeWeight: 1, // 선의 두께입니다
+                    strokeColor: "#00a0e9", // 선의 색깔입니다
+                    strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+                    strokeStyle: "solid", // 선의 스타일입니다
+                    path: [c1, c2],
+                });
+                var dist = poly.getLength(); // m 단위로 리턴
+                console.log(dist);
+                if (dist < radius) {
+                    console.log(center);
+                    console.log(m.getPosition());
+                    //poly.setPath([center, m.getPosition()]);
+                    m.setMap(map);
+                } else {
+                    m.setMap(null);
+                }
+            });
+        }
+        function set_allmarker(object) {
+            for (var i = 0; i < res_positions.length; i++) {
+                res_markers[i].setMap(null);//전체를 없애버리고
+                res_marker = new kakao.maps.Marker({//다시 생성
+                    map: map,
+                    position: res_positions[i].latlng,
+                    //zIndex: 1
+                });
+                res_markers.push(res_marker);
+                // 마커에 표시할 인포윈도우를 생성합니다
+                var infowindow = new kakao.maps.InfoWindow({
+                    content: res_positions[i].name
+                });
+                kakao.maps.event.addListener(res_marker, "click", showResInfo(res_positions[i].latlng, i));
+            }
+            object.addClass("d-none");
+
+        }
+        //대학교 마커 설정
+        var univ_marker_img_size = new kakao.maps.Size(50, 50);
+        var univ_marker;
+
+        for (var i = 0; i < univ_positions.length; i++) {
+            univ_marker = new kakao.maps.Marker({
+                map: map,
+                position: univ_positions[i].latlng,
+                image: new kakao.maps.MarkerImage("./univ.png", univ_marker_img_size, {
+                    offset: new kakao.maps.Point(25, 25)
+                }),
+                zIndex: 2
+            });
+
+            univ_markers.push(univ_markers);
+            kakao.maps.event.addListener(univ_marker, "click", show_univ_info(univ_marker, i));
+        }
+
+        function closeOverlay() {
+            overlay.setMap(null);
+        }
+
+
+        function show_univ_info(marker, index) {
+            return function () {
+                var detailAddr = "";
+                getCurrentUnivAddress(index, function (address) {
+                    var content =
+                        '<div class="wrap">' +
+                        '    <div class="info">' +
+                        '        <div class="title">' +
+                        '<span style="vertical-align:middle">' +
+                        '    <span class="fa fa-star-o" style="font-size:15px;margin:5px"></span>' +
+                        univ_positions[index].name +
+                        '            <div class="close" onclick="closeOverlay()" title="닫기"></div>' +
+                        "</span>" +
+                        "        </div>" +
+                        '        <div class="body media">' +
+                        '            <div class="img">' +
+                        '                <img src="' + (univ_positions[index].main_image != undefined ? univ_positions[index].main_image : "https://via.placeholder.com/73x70") + '" width="73" height="70">' +
+                        "           </div>" +
+                        '            <div class="desc media-body">' +
+                        '                <div class="ellipsis">' + address + "</div>" +
+                        (univ_positions[index].homepage != undefined ? '<div><a href="' + (univ_positions[index].homepage ? univ_positions[index].homepage : "#") + '" target="_blank" class="link">홈페이지</a></div>' : "") +
+                        '               <button type="button" class="btn btn-sm btn-dark" onclick="set_school(' + index + ')">이 학교 선택하기</button>' +
+                        "            </div>" +
+                        "        </div>" +
+                        "    </div>" +
+                        '    <div class="arrow"></div>' +
+                        "</div>";
+                    //console.log(res_positions[index]);
+                    overlay.setPosition(marker.getPosition());
+                    overlay.setContent(content);
+                    var pos = marker.getPosition();
+                    map.panTo(pos);
+
+                    overlay.setMap(map);
+                    marker_selected = true;
+                });
+            };
+        }
+
+        function setInfoContentByAjax(url, type, data, show, callback) {
+            if (type == "" || type == undefined) {
+                type = "get";
+            }
+            if (data == "" || type == undefined) {
+                data = "";
+            }
+            if (show == "" || show == undefined) {
+                show = true;
+            }
+            var info = $("#info");
+            $.ajax({
+                url: url,
+                type: type,
+                data: data,
+                success: function (response) {
+                    info.html(response);
+                },
+                error: function (request, status, error) {
+                    console.error(error);
+                },
+                complete: function () {
+                    if (show == true) {
+                        document.getElementById("info").classList.remove("d-none");
+                    }
+                    if (typeof callback === "function") {
+                        callback();
+                    }
+                },
+            });
+        }
+        function gotoposition(lat, lng, index) {
+            var latlng = new kakao.maps.LatLng(lat, lng);
+            console.log(latlng);
+            //map.panTo(latlng);
+            console.log(index);
+            showResInfo(latlng, index)(latlng, index);
+        }
+        function setsearchinginfo(array) {
+            console.log(array);
+            setInfoContentByAjax("./info/search_marker.html", "get", undefined, undefined, function () {
+                $("#search_i").text(array.length + "건의 결과를 찾았습니다");
+                var result_html = "";
+                $.each(array, function (index, item) {
+                    console.log(array);
+                    getCurrentResAddress(array, index, options = { use_searchtype: true }, function (address) {
+                        result_html +=
+                            `
+                            <div class="body media" onclick="gotoposition(${item.item.latlng.getLat()}, ${item.item.latlng.getLng()}, ${item.originindex});">
+                                <div class="img">
+                                    <img src="${item.item.main_image != undefined ? item.item.main_image : "https://via.placeholder.com/73x70"}" width="73" height="70">
+                                </div>
+                                <div class="desc media-body">
+                                    <h5>${item.item.name}</h5>
+                                    <div class="text-wrap">
+                                        ${address}
+                                    </div>
+                                <div>
+                                ${item.item.tel != undefined ? "<a href='tel:" + item.item.tel + "'>" + item.item.tel + "</a>" : ""}
+                            </div>
+                        평점:
+                            <div class="d-flex align-items-center">
+                                <div class="search_rate" data-rateyo-read-only="true" data-rateyo-rating="${item.item.rate}"></div>
+                                <div class="search_ratevalue"></div>
+                            </div></div></div>`
+                    });
+                    $(function () {
+                        $(".search_rate").on("rateyo.init", function (e, data) {
+                            $(this).siblings(".search_ratevalue").text(data.rating);
+                        });
+                        $(".search_rate").rateYo({
+                            starWidth: "15px",
+                            readOnly: true
+                        });
+                    });
+                });
+
+                $("#search_result").html(result_html)
+                //음식점 구분 1: 한식, 2: 중식, 3: 일식, 4: 양식, 5: 분식, 6: 기타
+                var filter_array = [];
+                $("#searchALL_btn").click(function () {
+                    filter_array = result_array;
+                    setsearchinginfo(filter_array);
+                });
+                $("#searchKOR_btn").click(function () {
+                    filter_array = result_array.filter(function (arr) { return arr.divide_num == 1 });
+                    setsearchinginfo(filter_array);
+                });
+                $("#searchCHN_btn").click(function () {
+                    filter_array = result_array.filter(function (arr) { return arr.divide_num == 2 });
+                    setsearchinginfo(filter_array);
+                });
+                $("#searchJPN_btn").click(function () {
+                    filter_array = result_array.filter(function (arr) { return arr.divide_num == 3 });
+                    setsearchinginfo(filter_array);
+                });
+                $("#searchWES_btn").click(function () {
+                    filter_array = result_array.filter(function (arr) { return arr.divide_num == 4 });
+                    setsearchinginfo(filter_array);
+                });
+                $("#searchBUN_btn").click(function () {
+                    filter_array = result_array.filter(function (arr) { return arr.divide_num == 5 });
+                    setsearchinginfo(filter_array);
+                });
+                $("#searchOTH_btn").click(function () {
+                    filter_array = result_array.filter(function (arr) { return arr.divide_num == 6 });
+                    setsearchinginfo(filter_array);
+                });
+                $("#searchNUL_btn").click(function () {
+                    filter_array = result_array.filter(function (arr) { return arr.divide_num == undefined });
+                    console.log(filter_array);
+                    setsearchinginfo(filter_array);
+
+                });
+                //$("#search_result").
+            });
+        }
+        function set_rate(index, rate) {
+            res_positions[index].rate = rate;
+        }
+        for (var i = 0; i < res_positions.length; i++) {
+            if (res_positions[i].reviews == undefined) {
+                continue;
+            } else {
+                for (var j = 0; j < res_positions[i].reviews.length; j++) {
+                    set_rate(i, res_positions[i].reviews[j].rate);
+                }
+            }
+        }
+        function set_school(index) {
+            setInfoContentByAjax("./info/school_m.html", "get", undefined, undefined, function () {
+                document.getElementById("info").classList.remove("d-none");
+                document.getElementById("school_id").innerHTML = univ_positions[index].name + " 선택됨";
+                document.getElementById("range_100meter").addEventListener("click", function () { radius_from_coordinate(100, univ_positions[index].latlng); });
+                document.getElementById("range_500meter").addEventListener("click", function () { radius_from_coordinate(500, univ_positions[index].latlng); });
+                document.getElementById("range_1000meter").addEventListener("click", function () { radius_from_coordinate(1000, univ_positions[index].latlng); });
+            });
+            console.log(univ_positions[index].name + "가 선택되었습니다");
+            //radius_from_coordinate(1000, univ_positions[index].latlng);
+        }
+        loc_range = new kakao.maps.Circle({
+            map: map,
+            strokeWeight: 1, // 선의 두께입니다
+            strokeColor: "#00a0e9", // 선의 색깔입니다
+            strokeOpacity: 0.1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+            strokeStyle: "solid", // 선의 스타일입니다
+            fillColor: "#00a0e9", // 채우기 색깔입니다
+            fillOpacity: 0.2, // 채우기 불투명도입니다
+        });
+        var t = false;
+
+        function active(callback) {
+            if (!loc_a) {
+                loc_a = true;
+                if (navigator.geolocation) {
+                    if (!device_check()) {
+                        alert(
+                            "PC에서는 정확한 위치가 표시되지 않을 수 있습니다."
+                        );
+                    }
+                    nav = navigator.geolocation.watchPosition(
+                        function (position) {
+                            if (t == false) {
+                                t = true;
+                                console.log(t);
+                                $(".toggle").toggle();
+                            }
+                            console.log(t);
+                            var lat = position.coords.latitude, // 위도
+                                lon = position.coords.longitude, // 경도
+                                pos = new kakao.maps.LatLng(lat, lon),
+                                accuracy = position.coords.accuracy; //미터단위
+                            console.log(accuracy);
+                            if (accuracy > 0) {
+                                var circleOptions = {
+                                    center: pos,
+                                    radius: accuracy,
+                                };
+                                loc_range.setOptions(circleOptions);
+                                //loc_range.setMap(map);
+                            }
+                            loc_marker.setPosition(pos); //현재위치 마커 위치설정
+                            loc_range.setPosition(pos); //현재위치 정확도 원 위치 설정
+                            map.panTo(pos);
+                        },
+                        function (err) {
+                            console.warn(
+                                "ERROR(" + err.code + "): " + err.message
+                            );
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 1000,
+                            maximumAge: 0,
+                        }
+                    );
+                } else {
+                    alert(
+                        "이 브라우저에서는 Geolocation이 지원되지 않습니다."
+                    );
+                }
+            }
+            if (typeof callback === "function") {
+                callback();
+            }
+        }
+
+        function deactive(callback) {
+            document.getElementby;
+            navigator.geolocation.clearWatch(nav);
+            loc_a = false;
+            $(".toggle").toggle(); //버튼 토글됨
+            if (typeof callback === "function") {
+                callback();
+            }
+        }
+
+        function device_check() {
+            var pc_devices = "win16|win32|win64|mac|macintel";
+            if (navigator.platform) {
+                isMobile = pc_devices.indexOf(navigator.platform.toLowerCase()) < 0;
+            }
+            return isMobile;
+        }
+
+        function use_gyro() {
+            if (device_check() == true) {
+                window.addEventListener("deviceorientation", function (
+                    event
+                ) {
+                    var alpha = event.alpha, //z
+                        beta = event.beta, //x
+                        gamma = event.gamma; //y
+                    //지도 회전에는 alpha만 사용합니다.
+                });
+            }
+        }
+        kakao.maps.event.addListener(map, "click", function (mouseEvent) {
+            console.log("latlng: new kakao.maps.LatLng(" + mouseEvent.latLng.getLat() + ", " + mouseEvent.latLng.getLng() + ")");
+            if (show_right_menu == true) {
+                rightbtn_overlay.setMap(null);
+            }
+        });
+        kakao.maps.event.addListener(map, "dragstart", function () {
+            console.log(true);
+            if (show_right_menu == true) {
+                rightbtn_overlay.setMap(null);
+            }
+        });
+        kakao.maps.event.addListener(map, "dragend", function () {
+            console.log(false);
+        });
+    </script>
+    <script>
+        //아래부터 로그인(일반, 소셜로그인) 관련된 기능을 넣어놨습니다.
+        //소셜 로그인을 사용할 시에는 각 사이트 api를 이용하여 로그인 한 이후, 받아오는 정보를 가지고, 사이트 회원가입 하는 과정이 필요합니다.
+        //만약에 db에 있는 정보와 로그인 해서 넘어 온 정보가 일치하는 것이 있다면 로그인을 시키면 되고, 아니면 회원가입으로 넘어가게 해야합니다.
+
+        //소셜로그인에 대한 부분이 modal/login.html에도 존재합니다. 양쪽 다 참고하면서 변경해주세요
+
+
+        //카카오톡 아이디 관련하여 필요한 정보입니다. 위에 지도와 같은 api키를 입력하셔도 됩니다.
+        Kakao.init("key");
+
+        var accesstoken = "";
+
+        function login_now() {
+            if (accesstoken != "" || local_login == true) {
+                console.log("로그인 되었습니다.");
+                $(".login").toggle();
+                $("#exampleModalCenter").modal("hide");
+                $("#profile_image").attr("src", login_user.profile_img);
+                $("#profile_imagev img").attr("src", login_user.profile_img);
+                $("#profile_nickname").text(login_user.nickname);
+            }
+        }
+
+        function modify_loginuser() {
+            $("#profile_image").attr("src", login_user.profile_img);
+            $("#profile_imagev img").attr("src", login_user.profile_img);
+            $("#profile_nickname").text(login_user.nickname);
+        }
+
+        function logout() {
+            //원래는 세션 파괴하는 과정이 필요하다.
+            alert("로그아웃 되었습니다");
+            login_user = null;
+            $(".login").toggle();
+        }
+
+        var naverLogin = new naver.LoginWithNaverId({
+            //네이버에서 제공받은 clientid를 적어주시면 됩니다
+            clientId: "클라이언트 아이디",
+            //callbackUrl: "https://jeiu-gradu.herokuapp.com/oauth/naver/callback",
+            callbackUrl: "http://" + window.location.hostname + (location.port == "" || location.port == undefined ? "" : ":" + location.port) + "/oauth/naver/callback",
+            isPopup: true,
+            /* 팝업을 통한 연동처리 여부 */
+            loginButton: {
+                color: "green",
+                type: 3,
+                height: 46,
+            } /* 로그인 버튼의 타입을 지정 */,
+        });
+        //console.log(naverLogin);
+        /* (5) 현재 로그인 상태를 확인 */
+        window.addEventListener("load", function () {
+            naverLogin.getLoginStatus(function (status) {
+                if (status) {
+                    /* (6) 로그인 상태가 "true" 인 경우 로그인 버튼을 없애고 사용자 정보를 출력합니다. */
+                    setLoginStatus();
+                }
+            });
+        });
+
+        /* (6) 로그인 상태가 "true" 인 경우 로그인 버튼을 없애고 사용자 정보를 출력합니다. */
+        function setLoginStatus() {
+            var profileImage = naverLogin.user.getProfileImage();
+            var nickName = naverLogin.user.getNickName();
+            var email = naverLogin.user.getEmail();
+            var name = naverLogin.user.getName();
+            var birthday = naverLogin.user.getBirthday();
+            var uniqId = naverLogin.user.getId();
+            console.log(email);
+        }
+    </script>
+</body>
+
+</html>

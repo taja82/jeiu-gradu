@@ -1,0 +1,199 @@
+<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">마커 추가</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                항목 선택
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-secondary" id="res_btn">음식점</button>
+                    <button type="button" class="btn btn-secondary" id="univ_btn">대학교</button>
+                </div>
+                <div class="form-group">
+                    <label for="name_input">이름</label>
+                    <input type="text" class="form-control" name="name" id="name_input">
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group" id="res_div">
+                    <label for="divide_select">업종</label>
+                    <select name="divide" class="form-control" id="divide_select">
+                        <option value="1">한식</option>
+                        <option value="2">중식</option>
+                        <option value="3">한식</option>
+                        <option value="4">양식</option>
+                        <option value="5">분식</option>
+                        <option value="6">디저트</option>
+                        <option value="7">기타</option>
+                    </select>
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tel_input">전화번호</label>
+                    <input type="tel" class="form-control" id="tel_input">
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="no1menu_input">대표메뉴</label>
+                    <input type="tel" class="form-control" id="no1menu_input">
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="opentime_select">영업시간</label>
+                    <select name="divide" class="form-control" id="opentime_select">
+                        <option value="1">매일</option>
+                        <option value="2">요일별</option>
+                    </select>
+                </div>
+                <div class="opentime_input">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="opentimestart">시작시간</label>
+                                <div class="input-group date" id="opentimestart" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input"
+                                        data-target="#opentimestart" />
+                                    <div class="input-group-append" data-target="#opentimestart"
+                                        data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="opentimestart">종료시간</label>
+                                <div class="input-group date" id="opentimeend" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input"
+                                        data-target="#opentimeend" />
+                                    <div class="input-group-append" data-target="#opentimeend"
+                                        data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-clock-o"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="menu_input">메뉴</label>
+                    <input type="tel" class="form-control" id="menu_input">
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tag_input">태그</label>
+                    <input data-role="tags-input" class="form-control" id="tag_input" value="">
+                    <small id="emailHelp" class="form-text text-muted">태그 항목은 검색을 더 간편하게 할 수 있도록 만들어줍니다.</small>
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address_input">주소</label>
+                    <input type="text" class="form-control" id="address_input">
+                    <small id="emailHelp" class="form-text text-muted">주소 항목은 적지 않을 경우에는 api를 통해 자동으로 주소를 불러오게
+                        됩니다.</small>
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <p>이 정보는 로그인 한 모든 사용자가 수정 가능합니다. 이 정보를 허위로 작성하거나, 사실에 근거없는 내용을 작성하실 경우에는, 해당 정보가 삭제될 수 있습니다.</p>
+                <button type="button" class="btn btn-primary w-100" id="add_btn">추가</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<script src="./valid.js"></script>
+<script>
+    $(function () {
+        $('#opentimestart, #opentimeend').datetimepicker({
+            format: 'LT',
+            locale: 'ko'
+        });
+    });
+    $(document).on("keyup", "#tel_input", function () {
+        $(this).val($(this).val().replace(/[^0-9]/g, "").replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})$/, "$1-$2-$3").replace("--", "-"));
+    });
+    $("#res_btn").click(function () {
+        $("#res_div").removeClass("d-none");
+    })
+    $("#univ_btn").click(function () {
+        $("#res_div").addClass("d-none");
+    })
+    $(document).ready(function () {
+        $('[data-role="tags-input"]').tagsInput();
+    })
+    $("#add_btn").click(function () {
+        if ($("#res_div").hasClass("d-none")) {//있으면 음식점
+            res_positions.push({
+
+            });
+        } else {
+            univ_positions.push({
+
+            })
+        }
+    });
+    $(".datetimepicker-input").change(function() {
+        console.log($(this).val());
+    })
+    $("#opentime_select").change(function () {
+        var week_array = [
+            {
+                eng: 'mon',
+                kor: "월요일"
+            },
+            {
+                eng: 'tue',
+                kor: "화요일"
+            },
+            {
+                eng: 'wed',
+                kor: "수요일",
+            }
+            , {
+                eng: 'thu',
+                kor: "목요일"
+            }, {
+                eng: 'fri',
+                kor: "금요일"
+            },
+            {
+                eng: 'sat',
+                kor: "토요일"
+            },
+            {
+                eng: 'sun',
+                kor: "일요일"
+            }
+        ];
+        if ($(this).val() == "2") {//요일별
+            $("#custom_pwfind").removeClass("d-none");
+        } else {
+            $("")
+        }
+    });
+</script>

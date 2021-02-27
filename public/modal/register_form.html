@@ -1,0 +1,168 @@
+<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">회원가입</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="register_form" autocomplete="off" novalidate>
+                <div class="form-group">
+                    <label for="id_input">아이디</label>
+                    <input type="text" name="id" class="form-control" id="id_input" required>
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email_input">이메일</label>
+                    <input type="email" name="id" class="form-control" id="email_input">
+                    <small id="emailHelp" class="form-text text-muted">이메일은 아이디를 잊어버렸을 경우에 찾을 수 있도록 합니다.</small>
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password_input">비밀번호</label>
+                    <input type="password" name="password" class="form-control" id="password_input">
+                    <small id="emailHelp" class="form-text text-muted">비밀번호는 8~20자, 공백 미포함, 영어,숫자,특수문자 3가지 중 2가지가 포함되어야
+                        합니다.</small>
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="passwordr_input">비밀번호 확인</label>
+                    <input type="password" name="passwordr" class="form-control" id="passwordr_input">
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nickname_input">닉네임</label>
+                    <input type="text" name="nickname" class="form-control" id="nickname_input">
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="img_uploader">프로필 사진</label>
+                    <input type="file" class="form-control-file" accept="image/gif, image/jpeg, image/png"
+                        id="img_uploader">
+                    <small id="emailHelp" class="form-text text-muted">5MB 미만인 이미지파일만 업로드 할 수 있습니다.</small>
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                    <div id="thumbnails"></div>
+                </div>
+                <div class="form-group">
+                    <label for="pwfind_select">비밀번호 찾기 질문</label>
+                    <select class="form-control" id="pwfind_select">
+                        <option value="1">어릴 때 살던 동네는?</option>
+                        <option value="2">가장 친하게 지냈던 친구의 이름은?</option>
+                        <option value="3">가장 인상 깊게 읽었던 책의 이름은?</option>
+                        <option value="4">기타(직접 작성)</option>
+                    </select>
+                </div>
+                <div class="form-group d-none" id="custom_pwfind">
+                    <label for="pwfindc_input">비밀번호 찾기 질문 입력</label>
+                    <input type="text" name="pwfindc" class="form-control" id="pwfindc_input">
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="pwfinda_input">비밀번호 찾기 답</label>
+                    <input type="text" name="pwfinda" class="form-control" id="pwfinda_input">
+                    <div class="valid-feedback">
+                    </div>
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <button type="button" id="register_btn" class="btn btn-primary w-100">회원가입</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<script src="../valid.js"></script>
+<script>
+    //아이디 임시규정. 5자에서 15자 가능. 알파벳, 숫자, 특수문자(_) 가능
+    $("#id_input").focusout(function () {
+        id_valid($(this));
+    });
+    $("#email_input").on("propertychange change keyup paste input", function () {
+        email_valid($(this));
+    });
+    //임시로 정한 비밀번호 규정. 비밀번호 길이 8~20자. 공백문자 없이, 영문,숫자,특수문자 중 2가지 이상 혼합하여 사용.
+    $("#password_input").on("propertychange change keyup paste input", function () {
+        password_valid($(this));
+    });
+    $("#passwordr_input").on("propertychange change keyup paste input", function () {
+        passwordr_valid($("#password_input"), $(this))
+    });
+    //닉네임 임시 규정. 2~15글자, 공백없이
+    $("#nickname_input").focusout(function () {
+        nickname_valid($(this));
+    });
+    $("#pwfinda_input").focusout(function () {
+        pwfinda_valid($(this));
+    });
+    $("#pwfindc_input").focusout(function () {
+        pwfindc_valid($(this));
+    });
+    $("#pwfind_select").change(function () {
+        if ($(this).val() == "4") {
+            $("#custom_pwfind").removeClass("d-none");
+        } else {
+            $("#custom_pwfind").addClass("d-none");
+        }
+    });
+    function valid_all() {
+        id_valid($("#id_input"));
+        email_valid($("#email_input"));
+        password_valid($("#password_input"));
+        passwordr_valid($("#password_input"), $("#passwordr_input"));
+        nickname_valid($("#nickname_input"));
+        pwfinda_valid($("#pwfinda_input"));
+        pwfindc_valid($("#pwfindc_input"));
+        if (id_valid($("#id_input")) && email_valid($("#email_input")) && passwordr_valid($("#password_input"), $("#passwordr_input")) && nickname_valid($("#nickname_input")) && pwfinda_valid($("#pwfinda_input")) && pwfindc_valid($("#pwfindc_input"))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    $("#register_btn").click(function () {
+        valid_all();
+        if (valid_all()) {//모든 조건이 맞아야
+            //$("#register_form").submit();
+            user_info.push({
+                no: user_info.length + 1,
+                logintype: 1,
+                id: $("#id_input").val(),
+                nickname: $("#nickname_input").val(),
+                password: $("#password_input").val(),
+                email: $("#email_input").val(),
+                password_find: {
+                    question_val: $("#pwfind_select option:selected").val(),
+                    custom_question: ($("#pwfind_select").val() == "4") ? $("#pwfindc_input").val() : "",
+                    answer: $("#pwfinda_input").val()
+                },
+                profile_img: (img_url != undefined) ? img_url : "https://via.placeholder.com/80"
+            });
+            alert("회원가입 됨");
+            $("#exampleModalCenter").modal('hide');
+        }
+        return false;
+    });
+</script>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <style>
+        html, body {
+            width:100%;
+            height:100%;
+            background-color:#888;
+        }
+        .wrap {
+            position: absolute;
+            width: 288px;
+            height: auto;
+            text-align: left;
+            overflow: hidden;
+            font-size: 12px;
+            font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
+            line-height: 1.5;
+        }
+
+        .wrap .info {
+            width: 286px;
+            height: auto;
+            border-radius: 5px;
+            border-bottom: 2px solid #ccc;
+            border-right: 1px solid #ccc;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .wrap .info:nth-child(1) {
+            border: 0;
+            box-shadow: 0px 1px 2px #888;
+        }
+
+        .info .title {
+            padding: 5px 0 0 10px;
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .title>span,
+        .title>div {
+            vertical-align: middle;
+        }
+
+        .info .close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #888;
+            width: 17px;
+            height: 17px;
+            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
+        }
+
+        .info .close:hover {
+            cursor: pointer;
+        }
+
+        .info .body {
+            position: relative;
+            overflow: hidden;
+            padding: 5px;
+            word-break: break-all;
+        }
+
+        .info .desc {
+            height: auto;
+            overflow: hidden;
+
+        }
+
+        .desc .ellipsis {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .desc .jibun {
+            font-size: 11px;
+            color: #888;
+            margin-top: -2px;
+        }
+
+        .info .img {
+            top: 6px;
+            left: 5px;
+            width: 73px;
+            height: 71px;
+            margin-right: 5px;
+            border: 1px solid #ddd;
+            color: #888;
+        }
+
+        .wrap .arrow {
+            content: '';
+            position: relative;
+            margin-left: -12px;
+            left: 50%;
+            width: 22px;
+            height: 12px;
+            background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')
+        }
+
+        .info .link {
+            color: #5085BB;
+        }
+    </style>
+</head>
+
+<body class="w-100 h-100 d-flex justify-content-center align-items-center">
+    <div class="wrap">
+        <div class="info">
+            <div class="title">
+                <span style="vertical-align:middle">
+                    aaaa
+                    <div class="close" onclick="closeOverlay()" title="닫기"></div>
+                </span>
+            </div>
+            <div class="body media">
+                <div class="img">
+                    <img src="https://via.placeholder.com/73x70" width="73" height="70">
+                </div>
+                <div class="desc media-body">
+                    <div class="text-wrap"> detailAddr </div>
+                    <div>
+                        <a href="tel: res_positions[index].phone_number"></a>
+                    </div>
+                    <div>평점:<div class="d-flex align-items-center">
+                            <div id="rateYo"></div>
+                            <div id="rate_value"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="arrow"></div>
+    </div>
+    <script>
+        $("#rateYo").rateYo({
+            starWidth: "15px",
+            readOnly: true,
+            rating: res_positions[index].rate
+        })
+    </script>
+
+</body>
+
+</html>

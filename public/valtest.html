@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="form-group">
+        <label for="pwfind_select">비밀번호 찾기 질문</label>
+        <select class="form-control" id="pwfind_select">
+            <option value="1">어릴 때 살던 동네는?</option>
+            <option value="2">가장 친하게 지냈던 친구의 이름은?</option>
+            <option value="3">가장 인상 깊게 읽었던 책의 이름은?</option>
+        </select>
+    </div>
+    <button id="btn">aa</button>
+    <script>
+        var user_info = [
+            {
+                no: 1,
+                logintype: 1,
+                id: "admin",
+                nickname: "관리자",
+                password: "testest",
+                email: "admin@aaa.com",
+                password_find: {
+                    question_val: 1,
+                    custom_question: "",
+                    answer: "인천"
+                },
+                profile_img: "https://via.placeholder.com/80"
+            },
+            {
+                no: 2,
+                logintype: 1,
+                id: "admin",
+                nickname: "관리자",
+                password: "testest",
+                email: "admin@aaa.com",
+                password_find: {
+                    question_val: 4,
+                    custom_question: "asdfasdf",
+                    answer: "인천"
+                },
+                profile_img: "https://via.placeholder.com/80"
+            }
+        ]
+        //console.log(user_info.password_find.question_val);
+        function password_question() {//가입할 시에 4번(기타일) 때에는 질문에 대한 답을 불러옴
+            var pwfind_question = user_info[1].password_find;
+            if (pwfind_question.question_val == 4) {
+                $("#pwfind_select").append(`<option val="4">${pwfind_question.custom_question}</option>`);
+            }
+        }
+        password_question();
+        $("#btn").click(function() {
+            console.log($("#pwfind_select option:selected").val() != user_info[1].password_find.question_val);
+        })
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <script>
+
+        var parent_value = "부모";
+
+        // 팝업창 띄우기 함수
+        function open_popup() {
+            window.open('child.html', '자식창');
+        }
+
+        function call_chlid() {  //부모창에서 자식창에 값 전달
+            try {
+
+                popup.child_value = "자식창 호출";
+                popup.child_function(); // 자식창 함수 호출
+
+            } catch (e) { // 부모 자식간의 연결이 끊어졌을 경우 처리
+                alert('팝업창을 다시 열어주세요');
+            }
+        }
+
+        function parent_function() {
+            alert(parent_value);
+        }
+    </script>
+</head>
+
+<body>
+    <input type='button' value='open' onclick='open_popup()' />
+    <input type='button' value='call' onclick='call_chlid()' />
+</body>
+
+</html>

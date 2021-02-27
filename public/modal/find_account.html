@@ -1,0 +1,32 @@
+<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">아이디/비밀번호 찾기</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            아이디나 비밀번호를 잊어버렸을 때 이용합니다
+            <div>
+                아이디를 잊어버렸을 경우
+                <button type="button" class="btn btn-primary" id="findid_btn">아이디 찾기</button>
+            </div>
+            <div>
+                비밀번호를 잊어버렸을 경우
+                <button type="button" class="btn btn-secondary" id="findpw_btn">비밀번호 찾기</button>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<script>
+    $("#findid_btn").click(function () {
+        setModalContentByAjax("./modal/find_id.html", "get", undefined, { backdrop: 'static', keyboard: false });
+    });
+    $("#findpw_btn").click(function () {
+        setModalContentByAjax("./modal/find_password.html", "get", undefined, { backdrop: 'static', keyboard: false });
+    })
+</script>

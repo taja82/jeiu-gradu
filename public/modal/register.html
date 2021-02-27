@@ -1,0 +1,55 @@
+<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">회원가입</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="fregister">
+                <div class="form-group">
+                    <label for="regster_term1">회원가입 약관</label>
+                    <textarea class="form-control" id="regster_term1" rows="5" readonly>
+                        ㅁㄴㅇㄹ
+                    </textarea>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="termcheck1">
+                    <label class="form-check-label" for="termcheck1">위 사항에 동의합니다.</label>
+                </div>
+                <div class="form-group">
+                    <label for="regster_term2">개인정보취급방침</label>
+                    <textarea class="form-control" id="regster_term2" rows="5" readonly>
+                        ㅁㄴㅇㄹ
+                    </textarea>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="termcheck2">
+                    <label class="form-check-label" for="termcheck2">위 사항에 동의합니다.</label>
+                </div>
+                <button type="button" class="btn btn-primary w-100" id="register_nextbtn">다음</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<script>
+    $("#register_nextbtn").click(function () {
+        if ($("#termcheck1").is(":checked") == false) {
+            alert("회원가입 약관에 동의하셔야 합니다.");
+            $("#termcheck1").focus();
+            return false;
+        } else if ($("#termcheck2").is(":checked") == false) {
+            alert("개인정보취급방침에 동의하셔야 합니다.");
+            $("#termcheck2").focus();
+            return false;
+        } else {
+            setModalContentByAjax("./modal/register_form.html", "get", undefined, {backdrop: 'static', keyboard: false}, function () {
+
+            });
+        }
+    });
+</script>

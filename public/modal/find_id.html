@@ -1,0 +1,65 @@
+<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">아이디 찾기</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            가입 당시에 입력하였던 이메일 주소를 이용하여, 아이디를 찾습니다
+            <div class="form-group">
+                <label for="email_input">이메일</label>
+                <input type="email" name="id" class="form-control" id="email_input">
+                <div class="valid-feedback">
+                </div>
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">아이디 찾기</button>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<script src="../valid.js"></script>
+<script>
+    function valid_all() {
+        email_valid($("#email_input"));
+        if (email_valid($("#email_input"))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function checkIdCompare() {
+        for (index = 0; index < user_info.length; index++) {
+            if ($("#id_input").val() == user_info[i].id) {
+                console.log(index);
+                return true;
+                break;
+            }
+        }
+        return false;
+    }
+
+    $("button:submit").click(function () {
+        valid_all();
+        if (valid_all()) {//모든 조건이 맞아야
+            //$("#register_form").submit();
+            for (var i = 0; i < user_info.length; i++) {
+                if ($("#email_input").val() == user_info[i].email) {
+                    alert("당신의 아이디는 " + user_info[i].id + "입니다.");
+                    $("#exampleModalCenter").modal('hide');
+                    return true;
+                } else {
+                    alert("일치하는 정보가 없습니다.");
+                    return false;
+                }
+            }
+        }
+        return false;
+    });
+</script>
